@@ -142,4 +142,15 @@
 
     **Answer: B**  
     The method is not type-safe and can lead to runtime errors if the objects in
+
+the list do not have a `toString` method or if they are not of the expected type. This can be improved using generics:
+`java
+    public class MyClass {
+        public static <T> void printList(List<T> list) {
+            for (T obj : list) {
+                System.out.println(obj.toString());
+            }
+        }
+    }
+    `
 ````
