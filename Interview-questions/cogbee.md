@@ -170,7 +170,7 @@ Choose based on the need for concurrent modifications.
 - Extend `Thread` class and override `run()` method.
 - Implement `Runnable` interface and pass an instance to `Thread` constructor.
 - Implement `Callable` interface for tasks that return a result and use `ExecutorService`.
-- Use ExecutorService to manage a pool of threads.Submit tasks to the ExecutorService using execute() or submit(). Shutdown the ExecutorService gracefully.
+- Use `ExecutorService` to manage a pool of threads.Submit tasks to the ExecutorService using `execute()` or `submit()`. Shutdown the ExecutorService gracefully.
 
 **Usage in Projects:**
 Use appropriate method based on the task's complexity and return type requirements.
