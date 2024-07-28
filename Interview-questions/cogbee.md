@@ -286,6 +286,21 @@ Manage different configurations for different environments easily.
 **Usage in Projects:**
 Implement cross-cutting concerns like logging, authentication, and rate limiting.
 
+1. Logging
+   Logging is a common practice to understand the flow of code & debugging. Interceptors are widely for the same, Documenting or recording the requests made by the client or the responses sent back to them is generally useful in debugging and monitoring purposes.
+
+2. Authentication
+   Authentication is a security mechanism that can be implemented inside an Interceptor before the request even reaches its appropriate controller. It can be intercepted by the Interceptor & authentication can be verified, if denied then the request doesn’t get delegated to the controller which not only minimizes the code but reduces a great overhead.
+
+3. Request/Response Modification
+   Interceptors are also used for modifying requests & responses. It can be done in the following ways :
+
+   - Adding or modifying request parameters
+   - Modifying request headers, or response head
+   - Change status code
+   - Redirection to a different URL
+   - Handle custom error requests/responses which frees the controller or an addition of an external component just to handle the exceptions.
+
 ---
 
 **How to handle external configuration in Spring Boot**
