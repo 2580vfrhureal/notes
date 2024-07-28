@@ -71,6 +71,16 @@ Binary Search Trees provide more efficient operations compared to general Binary
 
 ---
 
+- Full Binary Tree: Every node has either 0 or 2 child nodes, i.e., left and right or no children
+- Complete Binary Tree: All levels, except possibly the last, are filled, and all nodes are as left as possible
+- Perfect Binary Tree: A perfect binary tree, as the name suggests, is the most perfect kind of binary tree with all its nodes with exactly two children, and all leaf nodes at the same level
+- Balanced Binary Tree: The heights of any node’s left and right subtrees differ by at most one
+- Binary Search Tree (BST): A binary tree in which the left child node is smaller, and the right child node is greater than the parent node
+- Threaded Binary Tree: Each node of the binary tree contains extra information, called threads, that allows for efficient tree traversal without recursion or a stack
+- Heap: A complete binary tree that satisfies the heap property
+
+---
+
 **Collision resolution in Hashing:**
 
 **Explanation:**
@@ -160,6 +170,7 @@ Choose based on the need for concurrent modifications.
 - Extend `Thread` class and override `run()` method.
 - Implement `Runnable` interface and pass an instance to `Thread` constructor.
 - Implement `Callable` interface for tasks that return a result and use `ExecutorService`.
+- Use ExecutorService to manage a pool of threads.Submit tasks to the ExecutorService using execute() or submit(). Shutdown the ExecutorService gracefully.
 
 **Usage in Projects:**
 Use appropriate method based on the task's complexity and return type requirements.
