@@ -1944,3 +1944,208 @@ public class DependencyInjectionDemo {
 - **Request**: One instance per HTTP request (web application context).
 - **Session**: One instance per HTTP session (web application context).
 - **GlobalSession**: One instance per global HTTP session (portlet context).
+
+## Homework9
+
+### Why Spring Boot?
+
+**Pros**:
+
+1. **Simplified Setup**: Spring Boot simplifies the configuration and setup of Spring applications with its pre-configured templates and auto-configuration.
+2. **Standalone Applications**: Allows creating standalone applications with embedded servers like Tomcat, Jetty, or Undertow, eliminating the need for external application servers.
+3. **Convention Over Configuration**: Reduces boilerplate code and configuration, following the principle of convention over configuration.
+4. **Microservices Support**: Well-suited for building microservices architecture with integrated tools and libraries.
+5. **Production-Ready Features**: Includes features like metrics, health checks, and externalized configuration that are essential for production applications.
+6. **Community and Ecosystem**: Large community support and a rich ecosystem of plugins and extensions.
+
+**Cons**:
+
+1. **Learning Curve**: Can be overwhelming for beginners due to its many features and configurations.
+2. **Opinionated Defaults**: While convenient, the opinionated defaults might not suit every use case, leading to the need for custom configurations.
+3. **Resource Consumption**: Embedded servers and auto-configuration can lead to higher resource consumption compared to a finely tuned traditional Spring application.
+
+### Starting a Spring Boot Project from Scratch
+
+1. **Using Spring Initializr**:
+
+   - Go to [Spring Initializr](https://start.spring.io).
+   - Select the project metadata (project type, language, Spring Boot version, etc.).
+   - Add dependencies (e.g., Spring Web, Spring Data JPA, H2 Database).
+   - Generate the project and download the zip file.
+   - Extract the zip file and import the project into your IDE.
+
+2. **Manual Setup**:
+   - Create a new Maven or Gradle project.
+   - Add the Spring Boot Starter Parent and necessary dependencies to `pom.xml` or `build.gradle`.
+   - Create the main application class with the `@SpringBootApplication` annotation.
+   - Configure application properties in `src/main/resources/application.properties`.
+
+### @Controller vs @RestController
+
+**@Controller**:
+
+- Used to define a controller class.
+- Typically returns views in a web application.
+- Uses `@ResponseBody` to return data as JSON or XML.
+
+**@RestController**:
+
+- A specialized version of `@Controller`.
+- Combines `@Controller` and `@ResponseBody`, automatically serializing return values to JSON/XML.
+- Suitable for RESTful web services.
+
+**Example**:
+
+```java
+@RestController
+public class MyRestController {
+    @GetMapping("/hello")
+    public String sayHello() {
+        return "Hello, World!";
+    }
+}
+```
+
+### @PathVariable vs @RequestParam
+
+**@PathVariable**:
+
+- Used to extract values from the URI path.
+- Example: `/users/{id}` where `{id}` is a path variable.
+
+**@RequestParam**:
+
+- Used to extract query parameters from the request URL.
+- Example: `/users?id=1` where `id` is a query parameter.
+
+**Example**:
+
+```java
+@RestController
+public class MyController {
+    @GetMapping("/users/{id}")
+    public String getUserById(@PathVariable String id) {
+        return "User ID: " + id;
+    }
+
+    @GetMapping("/search")
+    public String search(@RequestParam String query) {
+        return "Search Query: " + query;
+    }
+}
+```
+
+### @RequestBody vs @ResponseBody
+
+**@RequestBody**:
+
+- Maps the HTTP request body to a method parameter.
+- Used to read data from the request body (e.g., JSON, XML).
+
+**@ResponseBody**:
+
+- Maps the return value of a method to the HTTP response body.
+- Used to write data directly to the response body (e.g., JSON, XML).
+
+**Example**:
+
+```java
+@RestController
+public class MyController {
+    @PostMapping("/users")
+    public String createUser(@RequestBody User user) {
+        return "User created: " + user.getName();
+    }
+
+    @GetMapping("/hello")
+    @ResponseBody
+    public String sayHello() {
+        return "Hello, World!";
+    }
+}
+```
+
+### Using @GetMapping, @PutMapping, @PostMapping, @DeleteMapping, @RequestMapping
+
+**Examples**:
+
+```java
+@RestController
+@RequestMapping("/api")
+public class MyController {
+
+    @GetMapping("/users")
+    public List<User> getUsers() {
+        return userService.getAllUsers();
+    }
+
+    @PostMapping("/users")
+    public User createUser(@RequestBody User user) {
+        return userService.saveUser(user);
+    }
+
+    @PutMapping("/users/{id}")
+    public User updateUser(@PathVariable Long id, @RequestBody User user) {
+        return userService.updateUser(id, user);
+    }
+
+    @DeleteMapping("/users/{id}")
+    public void deleteUser(@PathVariable Long id) {
+        userService.deleteUser(id);
+    }
+
+    @RequestMapping(value = "/greet", method = RequestMethod.GET)
+    public String greet() {
+        return "Hello!";
+    }
+}
+```
+
+### Spring Actuator
+
+**Spring Actuator**:
+
+- A sub-project of Spring Boot that provides production-ready features.
+- Includes endpoints for monitoring and managing applications.
+- Common endpoints: `/actuator/health`, `/actuator/info`, `/actuator/metrics`.
+
+### Achieving Async in Spring Boot Application
+
+**Using `@Async`**:
+
+1. Enable asynchronous support by adding `@EnableAsync` to a configuration class.
+2. Annotate methods with `@Async` to run them asynchronously.
+
+**Example**:
+
+```java
+import org.springframework.scheduling.annotation.Async;
+import org.springframework.scheduling.annotation.EnableAsync;
+import org.springframework.stereotype.Service;
+
+@Service
+@EnableAsync
+public class AsyncService {
+
+    @Async
+    public void asyncMethod() {
+        System.out.println("Async method called");
+    }
+}
+
+@RestController
+public class MyController {
+
+    private final AsyncService asyncService;
+
+    public MyController(AsyncService asyncService) {
+        this.asyncService = asyncService;
+    }
+
+    @GetMapping("/async")
+    public String callAsyncMethod() {
+        asyncService.asyncMethod();
+        return "Async method called";
+    }
+}
+```
