@@ -1694,3 +1694,253 @@ public class SpringAnnotationExample {
     }
 }
 ```
+
+## Homework7
+
+### HTTP Status Codes
+
+**200 OK**:
+
+- The request was successful, and the server responded with the requested data.
+
+**201 Created**:
+
+- The request was successful, and a new resource was created as a result.
+
+**202 Accepted**:
+
+- The request has been accepted for processing, but the processing is not complete.
+
+**204 No Content**:
+
+- The request was successful, but there is no content to send back in the response.
+
+**307 Temporary Redirect**:
+
+- The requested resource has been temporarily moved to a different URI. The client should use the new URI for future requests.
+
+**301 Moved Permanently**:
+
+- The requested resource has been permanently moved to a new URI. The client should use the new URI for future requests.
+
+**400 Bad Request**:
+
+- The server could not understand the request due to invalid syntax.
+
+**401 Unauthorized**:
+
+- The client must authenticate itself to get the requested response.
+
+**403 Forbidden**:
+
+- The client does not have access rights to the content; the server is refusing to give the requested resource.
+
+**404 Not Found**:
+
+- The server cannot find the requested resource.
+
+**500 Internal Server Error**:
+
+- The server encountered a situation it doesn't know how to handle.
+
+### HTTP
+
+**HTTP (Hypertext Transfer Protocol)**:
+
+- The foundation of any data exchange on the Web.
+- A protocol used for transmitting hypermedia documents, such as HTML.
+- Designed for communication between web browsers and web servers, but it can also be used for other purposes.
+
+### HTTP Methods
+
+**GET**:
+
+- Requests data from a specified resource.
+- Should not change the state of the resource.
+
+**POST**:
+
+- Submits data to be processed to a specified resource.
+- Often results in a change in state or side effects on the server.
+
+**PUT**:
+
+- Replaces all current representations of the target resource with the uploaded content.
+
+**DELETE**:
+
+- Removes the specified resource.
+
+**PATCH**:
+
+- Applies partial modifications to a resource.
+
+### POST vs PATCH
+
+**POST**:
+
+- Used to create a new resource.
+- Can result in the creation of a new resource or update existing resources.
+
+**PATCH**:
+
+- Used to apply partial updates to a resource.
+- Does not replace the entire resource but only changes the specified parts.
+
+### POST vs PUT
+
+**POST**:
+
+- Creates a new resource or submits data to be processed.
+- The resource created does not need to have a URI specified by the client.
+
+**PUT**:
+
+- Replaces the current representation of the resource with the new one.
+- The client specifies the URI of the resource to be updated or created.
+
+### TCP 3-Way Handshaking
+
+1. **SYN**: The client sends a SYN (synchronize) packet to the server to initiate a connection.
+2. **SYN-ACK**: The server responds with a SYN-ACK (synchronize-acknowledge) packet to acknowledge the request.
+3. **ACK**: The client sends an ACK (acknowledge) packet to establish the connection.
+
+### TCP vs UDP
+
+**TCP (Transmission Control Protocol)**:
+
+- Connection-oriented.
+- Ensures reliable data transfer with error checking and correction.
+- Slower but reliable.
+
+**UDP (User Datagram Protocol)**:
+
+- Connectionless.
+- Does not guarantee reliable data transfer or error checking.
+- Faster but less reliable.
+
+### Tomcat
+
+**Tomcat**:
+
+- An open-source implementation of the Java Servlet, JavaServer Pages, and Java Expression Language technologies.
+- A web server and servlet container developed by the Apache Software Foundation.
+
+### Basic Components of Tomcat
+
+- **Catalina**: The servlet container.
+- **Coyote**: The connector component for handling HTTP requests and responses.
+- **Jasper**: The JSP engine for compiling JSPs into servlets.
+- **Cluster**: Manages large-scale deployments by handling session replication.
+
+### Spring IOC
+
+**Spring IOC (Inversion of Control)**:
+
+- A principle where the control of objects or portions of a program is transferred to a container or framework.
+- In Spring, it is used to manage object creation and their dependencies.
+
+### IOC Container
+
+**IOC Container**:
+
+- A container that uses the IOC principle to manage the lifecycle and configuration of application objects.
+- In Spring, it is represented by the `ApplicationContext` interface.
+
+### Advantages of IOC
+
+- **Loose Coupling**: Reduces dependency between components.
+- **Easier Testing**: Facilitates unit testing.
+- **Improved Code Reusability**: Components can be reused across different contexts.
+
+### Dependency Injection (DI)
+
+**DI (Dependency Injection)**:
+
+- A design pattern used to implement IOC, where the control of creating objects and their dependencies is transferred to the container.
+
+### Example Code for Dependency Injection
+
+```java
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
+@Component
+class Engine {
+    public void start() {
+        System.out.println("Engine started");
+    }
+}
+
+@Component
+class Car {
+    private final Engine engine;
+
+    @Autowired
+    public Car(Engine engine) {
+        this.engine = engine;
+    }
+
+    public void drive() {
+        engine.start();
+        System.out.println("Car is driving");
+    }
+}
+
+public class DependencyInjectionDemo {
+    public static void main(String[] args) {
+        ApplicationContext context = new AnnotationConfigApplicationContext("com.example");
+        Car car = context.getBean(Car.class);
+        car.drive();
+    }
+}
+```
+
+**How to do Dependency Injection**:
+
+- Using annotations like `@Autowired`, `@Inject`, and `@Resource`.
+- Using XML configuration.
+
+### @Component vs @Bean
+
+**@Component**:
+
+- Indicates that a class is a Spring-managed component.
+- Automatically detected through classpath scanning.
+
+**@Bean**:
+
+- Indicates that a method produces a bean to be managed by Spring.
+- Used in configuration classes to define beans.
+
+### @Configuration
+
+**@Configuration**:
+
+- Indicates that a class contains bean definitions.
+- Used in conjunction with `@Bean` methods to configure and instantiate beans.
+
+### AOP (Aspect-Oriented Programming)
+
+**AOP**:
+
+- A programming paradigm that aims to increase modularity by allowing the separation of cross-cutting concerns (e.g., logging, security).
+- Enables the clean separation of business logic from system services.
+
+### JointPoint and Aspect in AOP
+
+**JointPoint**:
+
+- A specific point in the execution of a program, such as method execution or exception handling.
+
+**Aspect**:
+
+- A module that encapsulates advice (code) and pointcuts (where the code should be applied).
+
+### Spring Bean Scope
+
+- **Singleton**: One instance per Spring IOC container.
+- **Prototype**: A new instance every time the bean is requested.
+- **Request**: One instance per HTTP request (web application context).
+- **Session**: One instance per HTTP session (web application context).
+- **GlobalSession**: One instance per global HTTP session (portlet context).
