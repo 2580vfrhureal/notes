@@ -2149,3 +2149,241 @@ public class MyController {
     }
 }
 ```
+
+## Homework10
+
+### How Does Spring Handle Exceptions
+
+**Spring Exception Handling**:
+
+- Spring provides several mechanisms to handle exceptions in a consistent and maintainable way.
+
+1. **@ExceptionHandler**:
+
+   - Used in a controller to handle specific exceptions.
+   - Example:
+
+     ```java
+     @Controller
+     public class MyController {
+
+         @ExceptionHandler(MyException.class)
+         public ResponseEntity<String> handleMyException(MyException ex) {
+             return new ResponseEntity<>(ex.getMessage(), HttpStatus.BAD_REQUEST);
+         }
+
+         @GetMapping("/test")
+         public String test() {
+             throw new MyException("Test Exception");
+         }
+     }
+     ```
+
+2. **@ControllerAdvice**:
+
+   - A global exception handler for multiple controllers.
+   - Example:
+
+     ```java
+     @ControllerAdvice
+     public class GlobalExceptionHandler {
+
+         @ExceptionHandler(MyException.class)
+         public ResponseEntity<String> handleMyException(MyException ex) {
+             return new ResponseEntity<>(ex.getMessage(), HttpStatus.BAD_REQUEST);
+         }
+     }
+     ```
+
+3. **ResponseStatusException**:
+   - Used to throw exceptions with a specific HTTP status.
+   - Example:
+     ```java
+     @GetMapping("/test")
+     public String test() {
+         throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Test Exception");
+     }
+     ```
+
+### How Does Spring Validate Data
+
+**Spring Data Validation**:
+
+- Spring provides support for data validation using JSR-303/JSR-380 (Bean Validation API) with the Hibernate Validator as the default implementation.
+
+1. **Using @Valid and @Validated**:
+
+   - Example:
+
+     ```java
+     import javax.validation.constraints.Min;
+     import javax.validation.constraints.NotNull;
+
+     public class User {
+         @NotNull
+         private String name;
+
+         @Min(18)
+         private int age;
+
+         // getters and setters
+     }
+
+     @RestController
+     public class UserController {
+
+         @PostMapping("/users")
+         public ResponseEntity<String> createUser(@Valid @RequestBody User user) {
+             return new ResponseEntity<>("User created", HttpStatus.OK);
+         }
+     }
+     ```
+
+2. **Custom Validators**:
+
+   - Implementing custom validation logic.
+   - Example:
+
+     ```java
+     @Component
+     public class CustomValidator implements ConstraintValidator<CustomAnnotation, String> {
+
+         @Override
+         public boolean isValid(String value, ConstraintValidatorContext context) {
+             // Custom validation logic
+             return value != null && value.matches("[a-zA-Z]+");
+         }
+     }
+     ```
+
+### How Does Spring Do Logging
+
+**Spring Logging**:
+
+- Spring uses SLF4J (Simple Logging Facade for Java) as an abstraction layer for various logging frameworks (e.g., Logback, Log4j).
+
+1. **Configuration**:
+
+   - Add the logging dependencies (e.g., Logback) in `pom.xml` or `build.gradle`.
+   - Example for Logback in `pom.xml`:
+     ```xml
+     <dependency>
+         <groupId>ch.qos.logback</groupId>
+         <artifactId>logback-classic</artifactId>
+         <version>1.2.3</version>
+     </dependency>
+     ```
+
+2. **Using Logger**:
+
+   - Example:
+
+     ```java
+     import org.slf4j.Logger;
+     import org.slf4j.LoggerFactory;
+     import org.springframework.web.bind.annotation.GetMapping;
+     import org.springframework.web.bind.annotation.RestController;
+
+     @RestController
+     public class LoggingController {
+         private static final Logger logger = LoggerFactory.getLogger(LoggingController.class);
+
+         @GetMapping("/log")
+         public String log() {
+             logger.info("Logging info message");
+             return "Check the logs";
+         }
+     }
+     ```
+
+### Cache Hit vs Cache Miss
+
+**Cache Hit**:
+
+- Occurs when the requested data is found in the cache.
+- Improves performance by avoiding fetching data from the primary storage.
+
+**Cache Miss**:
+
+- Occurs when the requested data is not found in the cache.
+- The system then fetches data from the primary storage and often stores it in the cache for future requests.
+
+### Redis
+
+**Redis**:
+
+- An open-source, in-memory data structure store used as a database, cache, and message broker.
+- Supports data structures like strings, hashes, lists, sets, sorted sets, bitmaps, hyperloglogs, and geospatial indexes.
+- Known for its high performance, atomic operations, and rich data types.
+
+**Key Features**:
+
+- In-memory data store for fast access.
+- Supports persistence by saving data to disk.
+- Pub/Sub messaging system.
+- Replication and high availability with Redis Sentinel.
+- Clustering for horizontal scaling.
+
+### SQL vs NoSQL Databases
+
+**SQL Databases**:
+
+- Relational databases that use structured query language (SQL) for defining and manipulating data.
+- Examples: MySQL, PostgreSQL, Oracle, SQL Server.
+- Characteristics:
+  - Schema-based, with tables and fixed columns.
+  - ACID transactions.
+  - Suitable for complex queries and relationships.
+
+**NoSQL Databases**:
+
+- Non-relational databases designed for distributed data stores.
+- Examples: MongoDB, Cassandra, Redis, CouchDB.
+- Characteristics:
+  - Schema-less or flexible schema.
+  - BASE transactions.
+  - Designed for high performance, scalability, and flexibility.
+
+### Database Normalization
+
+**Normalization**:
+
+- The process of organizing data in a database to reduce redundancy and improve data integrity.
+- Involves dividing a database into two or more tables and defining relationships between them.
+- Normal forms:
+  - 1NF: Eliminate duplicate columns from the same table.
+  - 2NF: Remove subsets of data that apply to multiple rows of a table.
+  - 3NF: Remove columns that are not dependent on the primary key.
+
+### Vertical Scaling vs Horizontal Scaling
+
+**Vertical Scaling**:
+
+- Adding more resources (CPU, RAM) to a single server to handle increased load.
+- Pros: Simpler to implement.
+- Cons: Limited by hardware capacity, potential single point of failure.
+
+**Horizontal Scaling**:
+
+- Adding more servers to handle increased load, distributing the workload across multiple machines.
+- Pros: Better scalability, redundancy, and fault tolerance.
+- Cons: More complex to implement and manage.
+
+### ACID
+
+**ACID**:
+
+- A set of properties for reliable database transactions.
+- **Atomicity**: Transactions are all-or-nothing.
+- **Consistency**: Transactions bring the database from one valid state to another.
+- **Isolation**: Transactions do not interfere with each other.
+- **Durability**: Once a transaction is committed, it is permanent.
+
+### CAP Theorem
+
+**CAP**:
+
+- A theorem stating that a distributed system can provide only two of the following three guarantees simultaneously:
+  - **Consistency**: Every read receives the most recent write.
+  - **Availability**: Every request receives a response, without guarantee that it contains the most recent write.
+  - **Partition Tolerance**: The system continues to operate despite network partitions.
