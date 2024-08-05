@@ -1048,4 +1048,220 @@ public class MethodReferenceExample {
 }
 ```
 
-These explanations and code samples should provide a comprehensive overview of the topics mentioned.
+## Homework5
+
+### Deadlock
+
+**Definition**:
+
+- Deadlock is a situation where two or more threads are blocked forever, waiting for each other.
+- It occurs when multiple threads need the same locks but obtain them in different order.
+
+### Creating Deadlock with ReentrantLock
+
+**Example**:
+
+```java
+import java.util.concurrent.locks.ReentrantLock;
+
+public class DeadlockExample {
+    private final ReentrantLock lock1 = new ReentrantLock();
+    private final ReentrantLock lock2 = new ReentrantLock();
+
+    public void method1() {
+        lock1.lock();
+        try {
+            // Simulating work
+            Thread.sleep(100);
+            lock2.lock();
+            try {
+                // Critical section
+            } finally {
+                lock2.unlock();
+            }
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } finally {
+            lock1.unlock();
+        }
+    }
+
+    public void method2() {
+        lock2.lock();
+        try {
+            // Simulating work
+            Thread.sleep(100);
+            lock1.lock();
+            try {
+                // Critical section
+            } finally {
+                lock1.unlock();
+            }
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } finally {
+            lock2.unlock();
+        }
+    }
+
+    public static void main(String[] args) {
+        DeadlockExample example = new DeadlockExample();
+        Thread t1 = new Thread(example::method1);
+        Thread t2 = new Thread(example::method2);
+        t1.start();
+        t2.start();
+    }
+}
+```
+
+### Preventing Deadlock
+
+**Prevention Techniques**:
+
+1. **Avoid Nested Locks**: Do not acquire a lock if another lock is already held.
+2. **Lock Ordering**: Always acquire locks in a predefined order.
+3. **Lock Timeout**: Use `tryLock` with a timeout to avoid waiting indefinitely.
+
+**Why Prevent**:
+
+- Deadlocks cause the application to hang, leading to poor performance and unresponsiveness.
+
+### CompletableFuture vs Future
+
+**Future**:
+
+- Basic interface for representing the result of an asynchronous computation.
+- Cannot be manually completed, lacks functional programming support.
+
+**CompletableFuture**:
+
+- Enhanced with methods for chaining, combining tasks, handling results, and exceptions.
+- Supports both blocking and non-blocking operations.
+
+### CompletableFuture Common API
+
+- `supplyAsync()`: Executes a Supplier asynchronously.
+- `thenApply()`: Applies a function on the result.
+- `thenAccept()`: Consumes the result.
+- `thenRun()`: Runs a runnable after the result is available.
+- `exceptionally()`: Handles exceptions.
+- `join()`: Waits for the computation to complete and returns the result.
+
+### Implementing Logic with CompletableFuture
+
+**Example**:
+
+```java
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ExecutionException;
+
+public class CompletableFutureExample {
+    public static void main(String[] args) {
+        int initialNum = 1;
+
+        CompletableFuture<Integer> future = CompletableFuture.supplyAsync(() -> initialNum + 10)
+            .thenApply(num -> num * 4)
+            .thenAcceptAsync(result -> System.out.println("Result: " + result))
+            .exceptionally(ex -> {
+                System.out.println("Exception: " + ex.getMessage());
+                return null;
+            });
+
+        try {
+            future.get();
+        } catch (InterruptedException | ExecutionException e) {
+            e.printStackTrace();
+        }
+    }
+}
+```
+
+### Producer-Consumer Model Using `synchronized`
+
+**Producer-Consumer Example**:
+
+```java
+import java.util.LinkedList;
+import java.util.Queue;
+
+public class ProducerConsumerExample {
+    private final Queue<Integer> queue = new LinkedList<>();
+    private final int LIMIT = 10;
+    private final Object lock = new Object();
+
+    public void produce() throws InterruptedException {
+        int value = 0;
+        while (true) {
+            synchronized (lock) {
+                while (queue.size() == LIMIT) {
+                    lock.wait();
+                }
+                queue.offer(value++);
+                lock.notify();
+            }
+        }
+    }
+
+    public void consume() throws InterruptedException {
+        while (true) {
+            synchronized (lock) {
+                while (queue.isEmpty()) {
+                    lock.wait();
+                }
+                int value = queue.poll();
+                System.out.println("Consumed: " + value);
+                lock.notify();
+            }
+        }
+    }
+
+    public static void main(String[] args) {
+        ProducerConsumerExample example = new ProducerConsumerExample();
+        Thread producerThread = new Thread(() -> {
+            try {
+                example.produce();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        });
+
+        Thread consumerThread = new Thread(() -> {
+            try {
+                example.consume();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        });
+
+        producerThread.start();
+        consumerThread.start();
+    }
+}
+```
+
+### Synchronized Normal Method vs Synchronized Static Method
+
+**Synchronized Normal Method**:
+
+- Locks the instance (object) on which the method is called.
+- Different objects of the class can execute the method concurrently.
+
+**Synchronized Static Method**:
+
+- Locks the `Class` object, meaning all instances of the class are locked.
+- No instance of the class can execute the method concurrently.
+
+**Example**:
+
+```java
+public class SynchronizedExample {
+
+    public synchronized void normalMethod() {
+        // Synchronized on instance
+    }
+
+    public static synchronized void staticMethod() {
+        // Synchronized on class
+    }
+}
+```
