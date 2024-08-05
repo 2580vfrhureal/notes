@@ -476,7 +476,7 @@ Class loading process:
 
 ## Homework3
 
-### Checked vs Unchecked Exceptions in Java
+### 1. Checked vs Unchecked Exceptions in Java
 
 **Checked Exceptions:**
 
@@ -491,7 +491,7 @@ Class loading process:
 - Do not need to be declared in a method or constructor's `throws` clause.
 - Examples: `NullPointerException`, `ArithmeticException`.
 
-### Finally, Final, Finalize
+### 2. Finally, Final, Finalize
 
 **finally**:
 
@@ -508,7 +508,7 @@ Class loading process:
 - A method that is called by the garbage collector before the object is reclaimed.
 - Deprecated and not recommended for cleanup as it is not reliable.
 
-### Try-with-Resources
+### 3. Try-with-Resources
 
 **Definition**:
 
@@ -529,7 +529,7 @@ try (BufferedReader br = new BufferedReader(new FileReader("file.txt"))) {
 
 - Automatic resource management. No need to explicitly close resources.
 
-### Runtime Exception
+### 4. Runtime Exception
 
 **Definition**:
 
@@ -547,7 +547,7 @@ public class RuntimeExceptionExample {
 }
 ```
 
-### NoClassDefFoundError vs ClassNotFoundException
+### 5. NoClassDefFoundError vs ClassNotFoundException
 
 **NoClassDefFoundError**:
 
@@ -558,18 +558,18 @@ public class RuntimeExceptionExample {
 
 - Thrown when an application tries to load a class at runtime using `Class.forName`, `ClassLoader.loadClass`, or `ClassLoader.findSystemClass` methods and the class cannot be found.
 
-### Cleanup Activities in Finally Block
+### 6. Cleanup Activities in Finally Block
 
 - Ensures that resources such as I/O streams, database connections, etc., are closed regardless of whether an exception is thrown.
 - Prevents resource leaks which can lead to memory issues and other resource exhaustion problems.
 
-### OutOfMemoryError in Exception Handling
+### 7. OutOfMemoryError in Exception Handling
 
 **Definition**:
 
 - Thrown when the JVM cannot allocate an object because it is out of memory and no more memory could be made available by the garbage collector.
 
-### Generics in Java
+### 8. Generics in Java
 
 **Definition**:
 
@@ -582,7 +582,7 @@ public class RuntimeExceptionExample {
 - Code Reusability: Allows for more flexible and reusable code.
 - Eliminates ClassCastException: At runtime due to type errors.
 
-### How Generics Work and Type Erasure
+### 9. How Generics Work and Type Erasure
 
 **Generics**:
 
@@ -593,7 +593,7 @@ public class RuntimeExceptionExample {
 - The process by which Java replaces all type parameters in generic types with their bounds or `Object` if the type parameters are unbounded.
 - Ensures that generic type information does not exist at runtime.
 
-### Difference between List<? extends T> and List<? super T>
+### 10. Difference between List<? extends T> and List<? super T>
 
 **List<? extends T>**:
 
@@ -605,7 +605,7 @@ public class RuntimeExceptionExample {
 - A list of objects of a type that is a supertype of T.
 - Provides write access but limited read access.
 
-### Optional Class
+### 11. Optional Class
 
 **Definition**:
 
@@ -630,7 +630,7 @@ public class OptionalExample {
 }
 ```
 
-### Functional Interface
+### 12. Functional Interface
 
 **Definition**:
 
@@ -647,7 +647,7 @@ public interface MyFunctionalInterface {
 }
 ```
 
-### Default Method
+### 13. Default Method
 
 **Definition**:
 
@@ -664,7 +664,7 @@ public interface MyInterface {
 }
 ```
 
-### Predicate, Supplier, Consumer, Function
+### 14. Predicate, Supplier, Consumer, Function
 
 **Predicate**:
 
@@ -718,7 +718,7 @@ public class FunctionalInterfaceExample {
 }
 ```
 
-### Method Reference
+### 15. Method Reference
 
 **Definition**:
 
