@@ -746,3 +746,306 @@ public class FunctionalInterfaceExample {
 Consumer<String> print = System.out::println;
 print.accept("Hello, Method Reference");
 ```
+
+## Homework4
+
+### Coding Examples
+
+Let's start with the coding part, and then move on to the theoretical questions.
+
+**Creating the Student Class and List:**
+
+```java
+import java.util.*;
+import java.util.stream.Collectors;
+
+class Student {
+    String name;
+    int age;
+    int score;
+
+    public Student(String name, int age, int score) {
+        this.name = name;
+        this.age = age;
+        this.score = score;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public int getAge() {
+        return age;
+    }
+
+    public int getScore() {
+        return score;
+    }
+
+    @Override
+    public String toString() {
+        return "Student{name='" + name + "', age=" + age + ", score=" + score + '}';
+    }
+}
+
+public class StudentStreamExample {
+    public static void main(String[] args) {
+        List<Student> list = new ArrayList<>();
+        list.add(new Student("Alice", 20, 70));
+        list.add(new Student("Bob", 22, 50));
+        list.add(new Student("Anna", 21, 90));
+        list.add(new Student("John", 23, 45));
+
+        // 1. Find all students’ names starting with ‘A’
+        List<String> namesStartingWithA = list.stream()
+                .map(Student::getName)
+                .filter(name -> name.startsWith("A"))
+                .collect(Collectors.toList());
+        System.out.println("Names starting with 'A': " + namesStartingWithA);
+
+        // 2. Get the sum of all the students' scores
+        int sumOfScores = list.stream()
+                .mapToInt(Student::getScore)
+                .sum();
+        System.out.println("Sum of all scores: " + sumOfScores);
+
+        // 3. Find all the students whose score >= 60
+        List<Student> studentsWithHighScore = list.stream()
+                .filter(student -> student.getScore() >= 60)
+                .collect(Collectors.toList());
+        System.out.println("Students with score >= 60: " + studentsWithHighScore);
+
+        // 4. Retrieve all students' names
+        List<String> allNames = list.stream()
+                .map(Student::getName)
+                .collect(Collectors.toList());
+        System.out.println("All student names: " + allNames);
+
+        // 5. Count the frequency of each age
+        Map<Integer, Long> ageFrequency = list.stream()
+                .collect(Collectors.groupingBy(Student::getAge, Collectors.counting()));
+        System.out.println("Age frequency: " + ageFrequency);
+    }
+}
+```
+
+### Intermediate vs Terminal Operations
+
+**Intermediate Operations**:
+
+- Return another stream.
+- Lazy in nature; they are not executed until a terminal operation is invoked.
+- Examples: `filter()`, `map()`, `flatMap()`, `sorted()`, `distinct()`, `limit()`, `skip()`.
+
+**Terminal Operations**:
+
+- Produce a result or a side effect.
+- Trigger the processing of the pipeline.
+- Examples: `collect()`, `count()`, `forEach()`, `reduce()`, `toArray()`, `anyMatch()`, `allMatch()`, `noneMatch()`.
+
+### Thread Lifecycle
+
+The thread lifecycle in Java consists of the following states:
+
+1. **New**: A thread that is created but not yet started.
+2. **Runnable**: A thread that is ready to run but waiting for CPU time.
+3. **Running**: A thread that is currently executing.
+4. **Blocked/Waiting**: A thread that is blocked or waiting for a monitor lock or other resource.
+5. **Terminated**: A thread that has finished execution.
+
+**State Transitions**:
+
+- **New -> Runnable**: By calling `start()`.
+- **Runnable -> Running**: When the thread scheduler selects it.
+- **Running -> Blocked/Waiting**: When waiting for a resource or calling `wait()`.
+- **Blocked/Waiting -> Runnable**: When the resource is available or `notify()`, `notifyAll()` is called.
+- **Running -> Terminated**: When the run method completes.
+
+### Creating a Thread
+
+**1. Extending Thread Class**:
+
+```java
+class MyThread extends Thread {
+    public void run() {
+        System.out.println("Thread is running.");
+    }
+}
+
+public class ThreadExample1 {
+    public static void main(String[] args) {
+        MyThread t1 = new MyThread();
+        t1.start();
+    }
+}
+```
+
+**2. Implementing Runnable Interface**:
+
+```java
+class MyRunnable implements Runnable {
+    public void run() {
+        System.out.println("Thread is running.");
+    }
+}
+
+public class ThreadExample2 {
+    public static void main(String[] args) {
+        Thread t2 = new Thread(new MyRunnable());
+        t2.start();
+    }
+}
+```
+
+**3. Using Lambda Expressions**:
+
+```java
+public class ThreadExample3 {
+    public static void main(String[] args) {
+        Thread t3 = new Thread(() -> System.out.println("Thread is running."));
+        t3.start();
+    }
+}
+```
+
+**4. Using Executors Framework**:
+
+```java
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+
+public class ThreadExample4 {
+    public static void main(String[] args) {
+        ExecutorService executor = Executors.newFixedThreadPool(1);
+        executor.submit(() -> System.out.println("Thread is running."));
+        executor.shutdown();
+    }
+}
+```
+
+### Thread Pool
+
+**How It Works**:
+
+- Manages a pool of worker threads.
+- Reuses existing threads for new tasks instead of creating new ones.
+- Improves performance by reducing overhead of thread creation and destruction.
+
+### Potential Problems with `newCachedThreadPool` and `newFixedThreadPool`
+
+**newCachedThreadPool**:
+
+- Can potentially create an unlimited number of threads, leading to resource exhaustion.
+
+**newFixedThreadPool**:
+
+- The fixed number of threads may not handle sudden surges in workload effectively, causing delays or rejections.
+
+### Future
+
+**Definition**:
+
+- Represents the result of an asynchronous computation.
+- Provides methods to check if the computation is complete, to wait for its completion, and to retrieve the result.
+
+### CompletableFuture
+
+**Definition**:
+
+- An extension of `Future` that provides additional functionalities for handling asynchronous computations.
+- Supports non-blocking, declarative, and compositional programming styles.
+
+### Future vs CompletableFuture
+
+**Future**:
+
+- Basic interface for representing an asynchronous computation.
+- Limited functionality for chaining and combining tasks.
+
+**CompletableFuture**:
+
+- Enhanced with methods for chaining, combining tasks, handling results, and exceptions.
+- Supports both blocking and non-blocking operations.
+
+### Lock vs Synchronized
+
+**Lock**:
+
+- More flexible and scalable.
+- Can try for lock without blocking.
+- Supports multiple lock conditions.
+
+**Synchronized**:
+
+- Simpler to use.
+- Automatically releases the lock.
+- Limited functionality.
+
+### wait(), notify(), notifyAll(), join()
+
+**wait()**:
+
+- Causes the current thread to wait until another thread invokes `notify()` or `notifyAll()` on the same object.
+
+**notify()**:
+
+- Wakes up a single thread that is waiting on the object's monitor.
+
+**notifyAll()**:
+
+- Wakes up all threads that are waiting on the object's monitor.
+
+**join()**:
+
+- Waits for a thread to die.
+- Ensures that a thread completes its execution before the next line of code is executed.
+
+### Example Code for Predicate, Supplier, Consumer, Function
+
+**Example**:
+
+```java
+import java.util.function.*;
+
+public class FunctionalInterfacesExample {
+    public static void main(String[] args) {
+        // Predicate
+        Predicate<String> isNotEmpty = s -> !s.isEmpty();
+        System.out.println(isNotEmpty.test("Hello")); // true
+
+        // Supplier
+        Supplier<String> supplier = () -> "Supplied value";
+        System.out.println(supplier.get()); // Supplied value
+
+        // Consumer
+        Consumer<String> consumer = s -> System.out.println(s);
+        consumer.accept("Hello, World!"); // Hello, World!
+
+        // Function
+        Function<String, Integer> function = s -> s.length();
+        System.out.println(function.apply("Hello")); // 5
+    }
+}
+```
+
+### Method Reference
+
+**Definition**:
+
+- A shorthand for a lambda expression to call a method.
+- Uses `::` syntax.
+
+**Example**:
+
+```java
+import java.util.function.Consumer;
+
+public class MethodReferenceExample {
+    public static void main(String[] args) {
+        Consumer<String> print = System.out::println;
+        print.accept("Hello, Method Reference");
+    }
+}
+```
+
+These explanations and code samples should provide a comprehensive overview of the topics mentioned.
