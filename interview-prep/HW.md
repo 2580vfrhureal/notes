@@ -587,6 +587,7 @@ public class RuntimeExceptionExample {
 **Generics**:
 
 - Allow classes, interfaces, and methods to operate on objects of various types while providing compile-time type safety.
+- Generics in Java are implemented using type erasure, where the generic type information is removed at compile time and replaced with Object types.
 
 **Type Erasure**:
 
@@ -629,6 +630,19 @@ public class OptionalExample {
     }
 }
 ```
+
+1. **`ofNullable`**:
+
+   - `Optional.ofNullable(nullableString)` creates an `Optional` instance that contains the specified value if it is not null, otherwise it creates an empty `Optional`.
+
+2. **`orElse`**:
+
+   - `optionalString.orElse("Default Value")` returns the value if it is present; otherwise, it returns the specified default value ("Default Value").
+
+3. **`orElseThrow`**:
+   - `optionalString.orElseThrow(() -> new IllegalArgumentException("Value is absent"))` returns the value if it is present; otherwise, it throws the specified exception.
+
+By using `Optional`, you can avoid explicit null checks and handle the absence of values in a more declarative and safe way.
 
 ### 12. Functional Interface
 
