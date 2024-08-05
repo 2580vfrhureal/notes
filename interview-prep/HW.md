@@ -1265,3 +1265,432 @@ public class SynchronizedExample {
     }
 }
 ```
+
+## Homework6
+
+### Optimized Singleton Version
+
+The most optimized version of a Singleton in Java is often referred to as the "Bill Pugh Singleton Design." It utilizes a static inner helper class to ensure thread safety and lazy initialization without synchronization overhead.
+
+**Code**:
+
+```java
+public class Singleton {
+    // Private constructor to prevent instantiation
+    private Singleton() {}
+
+    // Static inner helper class responsible for holding Singleton instance
+    private static class SingletonHelper {
+        // Singleton instance, created only when the class is loaded
+        private static final Singleton INSTANCE = new Singleton();
+    }
+
+    // Public method to provide access to the instance
+    public static Singleton getInstance() {
+        return SingletonHelper.INSTANCE;
+    }
+}
+```
+
+**Explanation**:
+
+1. **Private Constructor**: Ensures that no other class can instantiate the Singleton class directly.
+2. **Static Inner Helper Class**: `SingletonHelper` is loaded only when it is referenced, thus creating the Singleton instance in a thread-safe, lazy-loaded manner.
+3. **Static Final Instance**: `INSTANCE` is created when `SingletonHelper` is loaded, ensuring only one instance is created.
+4. **Public Method**: `getInstance()` returns the Singleton instance. It triggers the loading of the `SingletonHelper` class and the creation of the Singleton instance if not already created.
+
+### Use Cases for Singleton
+
+- **Configuration Settings**: Where a single configuration object is used across the application.
+- **Logger**: Ensures all classes use the same logging instance.
+- **Caching**: Single cache instance used globally.
+- **Connection Pooling**: Managing a single pool of database connections.
+- **Device Communication**: Managing single access to hardware devices like printers or file systems.
+
+### Design Patterns
+
+#### Factory Pattern
+
+**Use Case**:
+
+- Creating objects without specifying the exact class of object that will be created.
+- Used when the type of objects needs to be determined at runtime.
+
+**Pros**:
+
+- Promotes loose coupling.
+- Centralized object creation.
+
+**Cons**:
+
+- Can introduce a large number of subclasses.
+- Can complicate the code with many factory classes.
+
+**Example**:
+
+```java
+public interface Shape {
+    void draw();
+}
+
+public class Circle implements Shape {
+    public void draw() {
+        System.out.println("Drawing Circle");
+    }
+}
+
+public class Rectangle implements Shape {
+    public void draw() {
+        System.out.println("Drawing Rectangle");
+    }
+}
+
+public class ShapeFactory {
+    public Shape getShape(String shapeType) {
+        if (shapeType == null) {
+            return null;
+        }
+        if (shapeType.equalsIgnoreCase("CIRCLE")) {
+            return new Circle();
+        } else if (shapeType.equalsIgnoreCase("RECTANGLE")) {
+            return new Rectangle();
+        }
+        return null;
+    }
+}
+```
+
+#### Builder Pattern
+
+**Use Case**:
+
+- Constructing complex objects with multiple representations.
+- Useful when objects need to be created with many optional parameters.
+
+**Pros**:
+
+- Improved readability and manageability.
+- Allows immutability.
+
+**Cons**:
+
+- Can make the code more complex with additional classes.
+
+**Example**:
+
+```java
+public class User {
+    private String firstName;
+    private String lastName;
+    private int age;
+
+    private User(UserBuilder builder) {
+        this.firstName = builder.firstName;
+        this.lastName = builder.lastName;
+        this.age = builder.age;
+    }
+
+    public static class UserBuilder {
+        private String firstName;
+        private String lastName;
+        private int age;
+
+        public UserBuilder setFirstName(String firstName) {
+            this.firstName = firstName;
+            return this;
+        }
+
+        public UserBuilder setLastName(String lastName) {
+            this.lastName = lastName;
+            return this;
+        }
+
+        public UserBuilder setAge(int age) {
+            this.age = age;
+            return this;
+        }
+
+        public User build() {
+            return new User(this);
+        }
+    }
+}
+```
+
+#### Observer Pattern
+
+**Use Case**:
+
+- Used when an object (subject) needs to notify multiple objects (observers) about changes in its state.
+
+**Pros**:
+
+- Promotes loose coupling.
+- Simplifies the subject by not needing to keep track of observers.
+
+**Cons**:
+
+- Can lead to memory leaks if observers are not properly removed.
+- Complex dependency management.
+
+**Example**:
+
+```java
+import java.util.ArrayList;
+import java.util.List;
+
+interface Observer {
+    void update(String message);
+}
+
+class Subject {
+    private List<Observer> observers = new ArrayList<>();
+
+    public void attach(Observer observer) {
+        observers.add(observer);
+    }
+
+    public void detach(Observer observer) {
+        observers.remove(observer);
+    }
+
+    public void notifyObservers(String message) {
+        for (Observer observer : observers) {
+            observer.update(message);
+        }
+    }
+}
+
+class ConcreteObserver implements Observer {
+    private String name;
+
+    public ConcreteObserver(String name) {
+        this.name = name;
+    }
+
+    @Override
+    public void update(String message) {
+        System.out.println(name + " received message: " + message);
+    }
+}
+```
+
+#### Decorator Pattern
+
+**Use Case**:
+
+- Adding functionality to objects dynamically without altering their structure.
+
+**Pros**:
+
+- Flexible alternative to subclassing.
+- Promotes code reusability.
+
+**Cons**:
+
+- Can result in a large number of small classes.
+
+**Example**:
+
+```java
+interface Shape {
+    void draw();
+}
+
+class Circle implements Shape {
+    public void draw() {
+        System.out.println("Drawing Circle");
+    }
+}
+
+abstract class ShapeDecorator implements Shape {
+    protected Shape decoratedShape;
+
+    public ShapeDecorator(Shape decoratedShape) {
+        this.decoratedShape = decoratedShape;
+    }
+
+    public void draw() {
+        decoratedShape.draw();
+    }
+}
+
+class RedShapeDecorator extends ShapeDecorator {
+    public RedShapeDecorator(Shape decoratedShape) {
+        super(decoratedShape);
+    }
+
+    @Override
+    public void draw() {
+        decoratedShape.draw();
+        setRedBorder(decoratedShape);
+    }
+
+    private void setRedBorder(Shape decoratedShape) {
+        System.out.println("Border Color: Red");
+    }
+}
+```
+
+#### Proxy Pattern
+
+**Static Proxy**:
+
+- Use Case: Control access to another object.
+- Pros: Simplifies client code, can provide additional functionality.
+- Cons: Requires proxy class for each real subject class.
+
+**Dynamic Proxy**:
+
+- Use Case: Implement interfaces at runtime.
+- Pros: More flexible, fewer classes to maintain.
+- Cons: Less performant than static proxies.
+
+**Static Proxy Example**:
+
+```java
+interface RealSubject {
+    void request();
+}
+
+class RealSubjectImpl implements RealSubject {
+    public void request() {
+        System.out.println("RealSubject request");
+    }
+}
+
+class Proxy implements RealSubject {
+    private RealSubjectImpl realSubject;
+
+    public Proxy() {
+        this.realSubject = new RealSubjectImpl();
+    }
+
+    public void request() {
+        System.out.println("Proxy request");
+        realSubject.request();
+    }
+}
+```
+
+**Dynamic Proxy Example**:
+
+```java
+import java.lang.reflect.InvocationHandler;
+import java.lang.reflect.Method;
+import java.lang.reflect.Proxy;
+
+interface RealSubject {
+    void request();
+}
+
+class RealSubjectImpl implements RealSubject {
+    public void request() {
+        System.out.println("RealSubject request");
+    }
+}
+
+class ProxyInvocationHandler implements InvocationHandler {
+    private Object target;
+
+    public ProxyInvocationHandler(Object target) {
+        this.target = target;
+    }
+
+    public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
+        System.out.println("Proxy before request");
+        Object result = method.invoke(target, args);
+        System.out.println("Proxy after request");
+        return result;
+    }
+}
+
+public class DynamicProxyExample {
+    public static void main(String[] args) {
+        RealSubject realSubject = new RealSubjectImpl();
+        RealSubject proxy = (RealSubject) Proxy.newProxyInstance(
+                RealSubject.class.getClassLoader(),
+                new Class[]{RealSubject.class},
+                new ProxyInvocationHandler(realSubject));
+        proxy.request();
+    }
+}
+```
+
+### Reflection
+
+**Definition**:
+
+- The ability of a program to examine and modify its structure and behavior at runtime.
+- Allows for introspection of classes, methods, and fields.
+
+**Example**:
+
+```java
+import java.lang.reflect.Method;
+
+public class ReflectionExample {
+    public static void main(String[] args) throws Exception {
+        Class<?> clazz = Class.forName("java.util.ArrayList");
+        Method method = clazz.getMethod("size");
+        Object instance = clazz.getDeclaredConstructor().newInstance();
+        System.out.println(method.invoke(instance)); // Outputs: 0
+    }
+}
+```
+
+### How Annotations Work in Spring
+
+**Definition**:
+
+- Annotations provide metadata about the program and can be used to influence the behavior of a Spring application.
+
+**Spring Annotations**:
+
+- **@Component**: Marks a class as a Spring component.
+- **@Autowired**: Marks a field or constructor to be injected by Spring's dependency injection.
+- **@Service**: Specialization of @Component for service classes.
+- **@Repository**: Specialization of @Component for DAO classes.
+- **@Controller**: Specialization of @Component for MVC controllers.
+- **@Configuration**: Indicates that a class contains bean definitions.
+- **@Bean**: Indicates that a method produces a bean to be managed by Spring.
+
+**Example**:
+
+```java
+import org.springframework.stereotype.Component;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
+
+@Component
+class MyComponent {
+    public void doWork() {
+        System.out.println("Working...");
+    }
+}
+
+@Component
+class MyService {
+    private final MyComponent component;
+
+    @Autowired
+    public MyService(MyComponent component) {
+        this.component = component;
+    }
+
+    public void execute() {
+        component.doWork();
+
+
+    }
+}
+
+public class SpringAnnotationExample {
+    public static void main(String[] args) {
+        AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext(SpringAnnotationExample.class);
+        MyService service = context.getBean(MyService.class);
+        service.execute();
+        context.close();
+    }
+}
+```
