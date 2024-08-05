@@ -473,3 +473,262 @@ Class loading process:
 1. **Loading**: Reads the `.class` file and creates a byte array.
 2. **Linking**: Involves verification, preparation (allocating memory for static variables), and resolution (resolving symbolic references).
 3. **Initialization**: Executes static initializers and static blocks.
+
+## Homework3
+
+### Checked vs Unchecked Exceptions in Java
+
+**Checked Exceptions:**
+
+- Checked at compile-time.
+- Must be declared in a method or constructor's `throws` clause if they can be thrown by the execution of the method or constructor and propagated outside the method or constructor boundary.
+- Examples: `IOException`, `SQLException`.
+
+**Unchecked Exceptions:**
+
+- Not checked at compile-time.
+- Include `RuntimeException` and its subclasses.
+- Do not need to be declared in a method or constructor's `throws` clause.
+- Examples: `NullPointerException`, `ArithmeticException`.
+
+### Finally, Final, Finalize
+
+**finally**:
+
+- A block used to execute important code such as cleanup actions.
+- Executes regardless of whether an exception is handled or not.
+
+**final**:
+
+- Keyword used to declare constants, prevent method overriding, and inheritance.
+- Final variables cannot be reassigned, final methods cannot be overridden, and final classes cannot be subclassed.
+
+**finalize**:
+
+- A method that is called by the garbage collector before the object is reclaimed.
+- Deprecated and not recommended for cleanup as it is not reliable.
+
+### Try-with-Resources
+
+**Definition**:
+
+- A statement that declares one or more resources, which are objects that must be closed after the program is finished with them.
+- Ensures that each resource is closed at the end of the statement.
+
+**Example**:
+
+```java
+try (BufferedReader br = new BufferedReader(new FileReader("file.txt"))) {
+    // Use the resource
+} catch (IOException e) {
+    // Handle the exception
+}
+```
+
+**Difference from ordinary try**:
+
+- Automatic resource management. No need to explicitly close resources.
+
+### Runtime Exception
+
+**Definition**:
+
+- A subclass of `Exception` that indicates conditions that a reasonable application might want to catch.
+- Examples include `NullPointerException`, `ArrayIndexOutOfBoundsException`.
+
+**Example**:
+
+```java
+public class RuntimeExceptionExample {
+    public static void main(String[] args) {
+        String str = null;
+        System.out.println(str.length()); // Throws NullPointerException
+    }
+}
+```
+
+### NoClassDefFoundError vs ClassNotFoundException
+
+**NoClassDefFoundError**:
+
+- Thrown when the JVM or ClassLoader tries to load the definition of a class (class file) and cannot find the definition.
+- Happens when a class was present during compilation but missing at runtime.
+
+**ClassNotFoundException**:
+
+- Thrown when an application tries to load a class at runtime using `Class.forName`, `ClassLoader.loadClass`, or `ClassLoader.findSystemClass` methods and the class cannot be found.
+
+### Cleanup Activities in Finally Block
+
+- Ensures that resources such as I/O streams, database connections, etc., are closed regardless of whether an exception is thrown.
+- Prevents resource leaks which can lead to memory issues and other resource exhaustion problems.
+
+### OutOfMemoryError in Exception Handling
+
+**Definition**:
+
+- Thrown when the JVM cannot allocate an object because it is out of memory and no more memory could be made available by the garbage collector.
+
+### Generics in Java
+
+**Definition**:
+
+- Allows types (classes and interfaces) to be parameters when defining classes, interfaces, and methods.
+- Helps to ensure type safety and reduces the need for type casting.
+
+**Advantages**:
+
+- Type Safety: Ensures that the correct type is used.
+- Code Reusability: Allows for more flexible and reusable code.
+- Eliminates ClassCastException: At runtime due to type errors.
+
+### How Generics Work and Type Erasure
+
+**Generics**:
+
+- Allow classes, interfaces, and methods to operate on objects of various types while providing compile-time type safety.
+
+**Type Erasure**:
+
+- The process by which Java replaces all type parameters in generic types with their bounds or `Object` if the type parameters are unbounded.
+- Ensures that generic type information does not exist at runtime.
+
+### Difference between List<? extends T> and List<? super T>
+
+**List<? extends T>**:
+
+- A list of objects of a type that is a subtype of T.
+- Provides read access but not write access (except `null`).
+
+**List<? super T>**:
+
+- A list of objects of a type that is a supertype of T.
+- Provides write access but limited read access.
+
+### Optional Class
+
+**Definition**:
+
+- A container object which may or may not contain a non-null value.
+- Provides methods to handle the presence or absence of a value without explicitly checking for null.
+
+**Example**:
+
+```java
+import java.util.Optional;
+
+public class OptionalExample {
+    public static void main(String[] args) {
+        Optional<String> optional = Optional.ofNullable(getValue());
+        System.out.println(optional.orElse("Default Value"));
+        optional.orElseThrow(() -> new IllegalArgumentException("Value not present"));
+    }
+
+    private static String getValue() {
+        return null; // or some value
+    }
+}
+```
+
+### Functional Interface
+
+**Definition**:
+
+- An interface with exactly one abstract method.
+- Can have multiple default or static methods.
+- Annotated with `@FunctionalInterface`.
+
+**Example**:
+
+```java
+@FunctionalInterface
+public interface MyFunctionalInterface {
+    void execute();
+}
+```
+
+### Default Method
+
+**Definition**:
+
+- A method in an interface with a default implementation.
+- Allows interfaces to have concrete methods without breaking the implementing classes.
+
+**Example**:
+
+```java
+public interface MyInterface {
+    default void defaultMethod() {
+        System.out.println("Default Method");
+    }
+}
+```
+
+### Predicate, Supplier, Consumer, Function
+
+**Predicate**:
+
+- Represents a boolean-valued function of one argument.
+
+```java
+Predicate<String> isEmpty = String::isEmpty;
+```
+
+**Supplier**:
+
+- Represents a supplier of results.
+
+```java
+Supplier<String> stringSupplier = () -> "Hello, World!";
+```
+
+**Consumer**:
+
+- Represents an operation that accepts a single input argument and returns no result.
+
+```java
+Consumer<String> print = System.out::println;
+```
+
+**Function**:
+
+- Represents a function that accepts one argument and produces a result.
+
+```java
+Function<String, Integer> length = String::length;
+```
+
+**Example Code**:
+
+```java
+import java.util.function.*;
+
+public class FunctionalInterfaceExample {
+    public static void main(String[] args) {
+        Predicate<String> isEmpty = String::isEmpty;
+        Supplier<String> stringSupplier = () -> "Hello, World!";
+        Consumer<String> print = System.out::println;
+        Function<String, Integer> length = String::length;
+
+        String str = stringSupplier.get();
+        print.accept(str);
+        System.out.println("Is empty: " + isEmpty.test(str));
+        System.out.println("Length: " + length.apply(str));
+    }
+}
+```
+
+### Method Reference
+
+**Definition**:
+
+- A shorthand notation of a lambda expression to call a method.
+- Used to refer to a method without executing it.
+- Types: Static method reference, instance method reference, constructor reference.
+
+**Example**:
+
+```java
+Consumer<String> print = System.out::println;
+print.accept("Hello, Method Reference");
+```
