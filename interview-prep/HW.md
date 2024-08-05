@@ -154,11 +154,322 @@ In this updated example:
 - `hobbies` is also declared `private final`, indicating that it cannot be reassigned after initialization.
 - In the constructor, `hobbies` is either assigned a defensive copy of the provided list (`new ArrayList<>(hobbies)`), or in this case, an unmodifiable view of the list (`Collections.unmodifiableList(hobbies)`). Using `Collections.unmodifiableList()` ensures that the `hobbies` list cannot be modified externally after the `ImmutablePerson` object is created.
 
-**8.HashTable vs HashMap vs ConcurrentHashmap**
+### 8. HashTable vs HashMap vs ConcurrentHashMap
 
-**9.String vs StringBuilder vs StringBuffer**
-**10.Comparator vs Comparable, when to use which one**
-**11.Overriding vs overloading**
-**12.JRE vs JDK vs JVM**
-**13.Java 8 basic data types**
-**14.Primitive type, reference type**
+**HashTable:**
+
+- **Thread Safety**: Synchronized, thus thread-safe.
+- **Null Values/Keys**: Does not allow any null keys or values.
+- **Performance**: Slower due to synchronization.
+- **Legacy**: Considered legacy and part of the original version of Java.
+
+**HashMap:**
+
+- **Thread Safety**: Not synchronized, thus not thread-safe.
+- **Null Values/Keys**: Allows one null key and multiple null values.
+- **Performance**: Faster due to lack of synchronization.
+- **Usage**: Preferred for non-thread-safe operations.
+
+**ConcurrentHashMap:**
+
+- **Thread Safety**: Thread-safe and designed for concurrent access.
+- **Null Values/Keys**: Does not allow null keys or values.
+- **Performance**: Better performance in concurrent environments due to segment locking.
+- **Usage**: Suitable for high-concurrency situations.
+
+### 9. String vs StringBuilder vs StringBuffer
+
+**String:**
+
+- **Mutability**: Immutable.
+- **Thread Safety**: Thread-safe (since immutable).
+- **Performance**: Slower for concatenation due to creating new objects.
+
+**StringBuilder:**
+
+- **Mutability**: Mutable.
+- **Thread Safety**: Not thread-safe.
+- **Performance**: Faster for string manipulation as it doesn't create new objects.
+
+**StringBuffer:**
+
+- **Mutability**: Mutable.
+- **Thread Safety**: Thread-safe (methods are synchronized).
+- **Performance**: Slower than StringBuilder due to synchronization but faster than String for string manipulation.
+
+### 10. Comparator vs Comparable
+
+**Comparable:**
+
+- **Usage**: Used for natural ordering.
+- **Method**: `compareTo(Object o)` method.
+- **Implementation**: Implemented by the class whose instances are being compared.
+- **Single Sort Sequence**: Only one sort sequence.
+
+**Comparator:**
+
+- **Usage**: Used for custom ordering.
+- **Method**: `compare(Object o1, Object o2)` method.
+- **Implementation**: Implemented by a separate class or provided as a lambda expression.
+- **Multiple Sort Sequences**: Can define multiple sort sequences.
+
+**When to Use:**
+
+- **Comparable**: Use when natural ordering is required and when the class controls its own sorting.
+- **Comparator**: Use when multiple orderings are needed or when the class does not control the sorting order.
+
+### 11. Overriding vs Overloading
+
+**Overriding:**
+
+- **Definition**: Redefining a method in a subclass that already exists in the superclass.
+- **Signature**: Must have the same method signature (name, parameters, return type).
+- **Binding**: Runtime (dynamic) binding.
+- **Purpose**: Provides specific implementation in the subclass.
+
+**Overloading:**
+
+- **Definition**: Defining multiple methods with the same name but different parameter lists in the same class.
+- **Signature**: Must have a different method signature.
+- **Binding**: Compile-time (static) binding.
+- **Purpose**: Increases method readability and reusability.
+
+### 12. JRE vs JDK vs JVM
+
+**JRE (Java Runtime Environment):**
+
+- **Components**: JVM, libraries, and other components to run applications.
+- **Usage**: Required to run Java applications.
+
+**JDK (Java Development Kit):**
+
+- **Components**: JRE + development tools (compilers, debuggers).
+- **Usage**: Required to develop Java applications.
+
+**JVM (Java Virtual Machine):**
+
+- **Components**: Execution engine that runs Java bytecode.
+- **Usage**: Converts bytecode into machine code and runs it.
+
+### 13. Java 8 Basic Data Types
+
+**Primitive Data Types:**
+
+- **byte**: 8-bit integer.
+- **short**: 16-bit integer.
+- **int**: 32-bit integer.
+- **long**: 64-bit integer.
+- **float**: 32-bit floating-point.
+- **double**: 64-bit floating-point.
+- **char**: 16-bit Unicode character.
+- **boolean**: true/false.
+
+### 14. Primitive Type vs Reference Type
+
+**Primitive Type:**
+
+- **Definition**: Basic data types (int, byte, char, etc.).
+- **Memory**: Stored directly in the memory.
+- **Size**: Fixed size.
+
+**Reference Type:**
+
+- **Definition**: Objects and arrays.
+- **Memory**: Stores references to the actual data.
+- **Size**: Not fixed (depends on the object).
+
+## Homework2
+
+### 1. Final Keyword
+
+The `final` keyword in Java is used to declare constants, prevent inheritance, and ensure immutability. Its usage is threefold:
+
+- **Final Variable**: Cannot be reassigned once a value is assigned.
+- **Final Method**: Cannot be overridden by subclasses.
+- **Final Class**: Cannot be subclassed.
+
+### 2. Immutable Student Class
+
+To create an immutable `Student` class, follow these steps:
+
+1. Make the class `final`.
+2. Declare all fields as `private` and `final`.
+3. Initialize fields via constructor.
+4. Provide only getter methods without setters.
+5. Ensure `List<Course>` is deeply immutable.
+
+Here is the code:
+
+```java
+import java.util.Collections;
+import java.util.List;
+
+public final class Student {
+    private final int studentId;
+    private final String firstName;
+    private final String lastName;
+    private final List<Course> courses;
+
+    public Student(int studentId, String firstName, String lastName, List<Course> courses) {
+        this.studentId = studentId;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.courses = Collections.unmodifiableList(courses);
+    }
+
+    public int getStudentId() {
+        return studentId;
+    }
+
+    public String getFirstName() {
+        return firstName;
+    }
+
+    public String getLastName() {
+        return lastName;
+    }
+
+    public List<Course> getCourses() {
+        return courses;
+    }
+
+    // Assuming Course class is also immutable
+    public static final class Course {
+        private final String courseName;
+        private final String courseCode;
+
+        public Course(String courseName, String courseCode) {
+            this.courseName = courseName;
+            this.courseCode = courseCode;
+        }
+
+        public String getCourseName() {
+            return courseName;
+        }
+
+        public String getCourseCode() {
+            return courseCode;
+        }
+    }
+}
+```
+
+### 3. Volatile, Transient, Synchronized
+
+**Volatile**:
+
+- Ensures visibility of changes to variables across threads.
+- Reads and writes to a volatile variable are always visible to other threads.
+
+**Transient**:
+
+- Prevents serialization of a field.
+- When an object is serialized, transient fields are ignored.
+
+**Synchronized**:
+
+- Ensures that a method or block of code can only be executed by one thread at a time.
+- Provides mutual exclusion and visibility guarantees.
+
+### 4. Throw vs Throws
+
+**throw**:
+
+- Used to explicitly throw an exception.
+- Example: `throw new IllegalArgumentException("Invalid argument");`
+
+**throws**:
+
+- Declares that a method can throw exceptions, notifying the caller that they must handle or declare these exceptions.
+- Example: `public void myMethod() throws IOException { }`
+
+### 5. Final vs Finally vs Finalize
+
+**final**:
+
+- Keyword for constants, immutability, and inheritance control.
+
+**finally**:
+
+- Block that executes after a `try` block, regardless of whether an exception was thrown or not.
+- Used for cleanup operations.
+
+**finalize**:
+
+- Method called by the garbage collector before reclaiming the object's memory.
+- Deprecated and not recommended for resource cleanup.
+
+### 6. This vs Super
+
+**this**:
+
+- Refers to the current instance of a class.
+- Used to access class members and constructors.
+
+**super**:
+
+- Refers to the superclass (parent class) instance.
+- Used to access superclass methods, variables, and constructors.
+
+### 7. Abstract Class vs Interface
+
+**Abstract Class**:
+
+- Can have both abstract methods (without body) and concrete methods (with body).
+- Can have state (fields).
+- Inherits a class using `extends`.
+
+**Interface**:
+
+- Can only have abstract methods (until Java 8, which allows default and static methods).
+- Cannot have state (fields, until Java 9 which allows private methods).
+- Implements a class using `implements`.
+
+### 8. JVM Architecture
+
+Java Virtual Machine (JVM) architecture consists of:
+
+1. **ClassLoader Subsystem**: Loads class files.
+2. **Runtime Data Area**: Includes Method Area, Heap Area, Stack Area, PC Registers, and Native Method Stacks.
+3. **Execution Engine**: Executes bytecode using the Interpreter, JIT Compiler, and Garbage Collector.
+4. **Native Method Interface**: Calls and manages native code (e.g., C/C++).
+
+### 9. Java Modifier Scope
+
+**public**:
+
+- Accessible from anywhere.
+
+**private**:
+
+- Accessible only within the declared class.
+
+**protected**:
+
+- Accessible within the same package and subclasses.
+
+**default (package-private)**:
+
+- Accessible only within the same package.
+
+### 10. Static Scope
+
+**Static**:
+
+- Belongs to the class rather than instances.
+- Static members (fields and methods) are shared among all instances of a class.
+- Can be accessed without creating an instance of the class.
+
+### 11. How Does ClassLoader Work
+
+ClassLoaders in Java are responsible for loading classes during runtime:
+
+1. **Bootstrap ClassLoader**: Loads core Java classes (e.g., java.lang.\*).
+2. **Extension ClassLoader**: Loads classes from the extension directories (e.g., `lib/ext`).
+3. **Application ClassLoader**: Loads classes from the classpath.
+
+Class loading process:
+
+1. **Loading**: Reads the `.class` file and creates a byte array.
+2. **Linking**: Involves verification, preparation (allocating memory for static variables), and resolution (resolving symbolic references).
+3. **Initialization**: Executes static initializers and static blocks.
