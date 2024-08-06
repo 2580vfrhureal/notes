@@ -3151,3 +3151,231 @@ public class MyController {
 4. **Negotiate Deadline**: If possible, negotiate an extension for the deadline.
 5. **Break Down Tasks**: Break down remaining tasks into smaller parts to manage them better.
 6. **Reflect and Learn**: After the deadline, reflect on what caused the delay and how to improve in the future.
+
+## Homework15
+
+### Unit Test and Integration Test for an Evaluation Project
+
+**Unit Test**:
+Unit tests are designed to test individual units or components of a software in isolation from the rest of the application.
+
+```java
+// UserService.java
+public class UserService {
+    private UserRepository userRepository;
+
+    public UserService(UserRepository userRepository) {
+        this.userRepository = userRepository;
+    }
+
+    public User findUserById(Long id) {
+        return userRepository.findById(id).orElse(null);
+    }
+}
+
+// UserServiceTest.java
+import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.*;
+
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
+
+public class UserServiceTest {
+
+    @Mock
+    private UserRepository userRepository;
+
+    private UserService userService;
+
+    @BeforeEach
+    public void setUp() {
+        MockitoAnnotations.openMocks(this);
+        userService = new UserService(userRepository);
+    }
+
+    @Test
+    public void testFindUserById() {
+        User user = new User();
+        user.setId(1L);
+        when(userRepository.findById(1L)).thenReturn(Optional.of(user));
+
+        User foundUser = userService.findUserById(1L);
+        assertNotNull(foundUser);
+        assertEquals(1L, foundUser.getId());
+    }
+}
+```
+
+**Integration Test**:
+Integration tests verify the interactions between different parts of the system. They are typically more complex than unit tests because they test multiple components.
+
+```java
+// UserRepository.java
+public interface UserRepository extends JpaRepository<User, Long> {
+}
+
+// UserController.java
+@RestController
+@RequestMapping("/users")
+public class UserController {
+
+    @Autowired
+    private UserService userService;
+
+    @GetMapping("/{id}")
+    public ResponseEntity<User> getUserById(@PathVariable Long id) {
+        User user = userService.findUserById(id);
+        return user != null ? ResponseEntity.ok(user) : ResponseEntity.notFound().build();
+    }
+}
+
+// UserControllerIntegrationTest.java
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.web.servlet.MockMvc;
+
+@SpringBootTest
+@AutoConfigureMockMvc
+public class UserControllerIntegrationTest {
+
+    @Autowired
+    private MockMvc mockMvc;
+
+    @Autowired
+    private UserRepository userRepository;
+
+    @BeforeEach
+    public void setUp() {
+        userRepository.deleteAll();
+        User user = new User();
+        user.setId(1L);
+        userRepository.save(user);
+    }
+
+    @Test
+    public void testGetUserById() throws Exception {
+        mockMvc.perform(get("/users/1"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.id").value(1L));
+    }
+}
+```
+
+### TDD vs BDD
+
+**TDD (Test-Driven Development)**:
+
+- Write tests before writing the code that will make the tests pass.
+- Focuses on the implementation of features.
+- Typical workflow: Write a failing test, write code to make the test pass, refactor the code.
+
+**BDD (Behavior-Driven Development)**:
+
+- Extends TDD by writing tests in natural language to describe the behavior of the application.
+- Focuses on the behavior of the application from the end-user perspective.
+- Uses Given-When-Then format to describe scenarios.
+
+### What is JUnit
+
+**JUnit**:
+
+- A popular framework for writing and running tests in Java.
+- Provides annotations to identify test methods and lifecycle methods (e.g., `@Test`, `@BeforeEach`, `@AfterEach`).
+
+### What is Mockito
+
+**Mockito**:
+
+- A mocking framework for Java.
+- Allows you to create mock objects and define their behavior.
+- Useful for unit testing by isolating the class under test from its dependencies.
+
+### How Do You Test Your Application
+
+**Testing Approach**:
+
+1. **Unit Testing**: Test individual components in isolation using JUnit and Mockito.
+2. **Integration Testing**: Test the interaction between multiple components using Spring Boot's testing support.
+3. **End-to-End Testing**: Test the entire application flow from start to finish using tools like Selenium.
+4. **Manual Testing**: Perform exploratory testing to find edge cases and unexpected behavior.
+
+### Tools for Code Quality Analysis
+
+**Tools Used**:
+
+- **SonarQube**: Static code analysis tool to detect code quality issues and vulnerabilities.
+- **PMD**: A static code analysis tool to find bugs and code smells.
+- **Checkstyle**: Ensures the Java code adheres to a coding standard.
+
+### Authentication vs Authorization
+
+**Authentication**:
+
+- The process of verifying the identity of a user or system.
+- Example: Logging in with a username and password.
+
+**Authorization**:
+
+- The process of granting or denying access to resources based on the authenticated user's permissions.
+- Example: Access control based on user roles.
+
+### Encryption vs Hashing vs Encoding
+
+**Encryption**:
+
+- Transforming data into a different format using a key to ensure confidentiality.
+- Can be decrypted back to the original data using the same or a corresponding key.
+
+**Hashing**:
+
+- Converting data into a fixed-size string of characters, which is typically a digest.
+- One-way function, meaning it cannot be decrypted back to the original data.
+
+**Encoding**:
+
+- Converting data into a different format using a scheme that is publicly available.
+- Not meant for security but for data transformation and readability.
+
+### How Do You Secure Your Application
+
+**Security Practices**:
+
+1. **Authentication and Authorization**: Use robust authentication mechanisms (e.g., OAuth2) and enforce authorization checks.
+2. **Input Validation**: Validate all inputs to prevent SQL injection, XSS, and other injection attacks.
+3. **HTTPS**: Encrypt data in transit using HTTPS.
+4. **Data Encryption**: Encrypt sensitive data at rest.
+5. **Security Headers**: Implement security headers (e.g., Content Security Policy, X-Content-Type-Options).
+6. **Regular Updates**: Keep libraries and dependencies up-to-date to mitigate known vulnerabilities.
+
+### What is JWT
+
+**JWT (JSON Web Token)**:
+
+- A compact, URL-safe means of representing claims to be transferred between two parties.
+- Consists of three parts: Header, Payload, and Signature.
+- Used for authentication and information exchange.
+
+### What is OAuth2
+
+**OAuth2**:
+
+- An authorization framework that allows third-party applications to obtain limited access to a user's resources without exposing their credentials.
+- Involves four roles: Resource Owner, Client, Resource Server, and Authorization Server.
+
+### Summary
+
+- **CI/CD**: Continuous integration and deployment practices.
+- **JUnit**: Framework for unit testing in Java.
+- **Mockito**: Mocking framework for unit tests.
+- **Authentication vs Authorization**: Verifying identity vs granting access.
+- **Encryption vs Hashing vs Encoding**: Protecting data vs creating fixed-size representations vs transforming data formats.
+- **JWT**: Token for secure information exchange.
+- **OAuth2**: Framework for secure authorization.
