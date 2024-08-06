@@ -2815,3 +2815,225 @@ public class MyController {
 6. **Circuit Breaker**:
    - **Hystrix**: Provides fallback methods to handle failures.
    - **Resilience4j**: A lightweight fault tolerance library inspired by Hystrix.
+
+## Homework13
+
+### Docker Concepts
+
+**Docker**:
+
+- Docker is a platform that allows developers to automate the deployment of applications inside lightweight, portable containers.
+
+**Dockerfile**:
+
+- A text file containing a set of instructions on how to build a Docker image.
+- Example:
+  ```dockerfile
+  FROM openjdk:11-jdk-slim
+  COPY target/myapp.jar /app/myapp.jar
+  CMD ["java", "-jar", "/app/myapp.jar"]
+  ```
+
+**Docker Image**:
+
+- A read-only template with instructions for creating a Docker container.
+- Built from a Dockerfile.
+
+**Docker Container**:
+
+- A runnable instance of a Docker image.
+- Containers are isolated and have their own filesystem, memory, CPU, and network.
+
+### Docker vs VM
+
+**Docker**:
+
+- Containers share the host OS kernel and resources.
+- Lightweight and faster startup times.
+- Suitable for microservices and applications requiring rapid deployment and scaling.
+
+**VM (Virtual Machine)**:
+
+- Each VM runs a complete OS with its own kernel.
+- Heavier and slower to start.
+- Suitable for running different OSes on the same hardware.
+
+### Using Docker in a Real Project
+
+1. **Setting Up Docker**:
+
+   - Install Docker on your development machine or server.
+
+2. **Creating a Dockerfile**:
+
+   - Write a Dockerfile for your application.
+
+3. **Building Docker Image**:
+
+   - Build the image using the Dockerfile.
+     ```sh
+     docker build -t myapp:latest .
+     ```
+
+4. **Running Docker Container**:
+
+   - Run the container from the image.
+     ```sh
+     docker run -d -p 8080:8080 myapp:latest
+     ```
+
+5. **Using Docker Compose**:
+
+   - Define and run multi-container Docker applications using `docker-compose.yml`.
+
+6. **Pushing to Docker Registry**:
+   - Push your Docker image to a registry (e.g., Docker Hub, AWS ECR).
+     ```sh
+     docker push myapp:latest
+     ```
+
+### AWS Services and Usage in Projects
+
+1. **EC2 (Elastic Compute Cloud)**:
+
+   - Provides resizable compute capacity in the cloud.
+   - Use Cases: Hosting web applications, databases, and running batch processing jobs.
+   - Usage:
+     - Launch an EC2 instance via the AWS Management Console.
+     - SSH into the instance to deploy and manage applications.
+
+2. **ECS (Elastic Container Service)**:
+
+   - Managed container orchestration service for running Docker containers.
+   - Use Cases: Running microservices and containerized applications.
+   - Usage:
+     - Define tasks using ECS Task Definitions.
+     - Deploy containers on ECS using AWS Fargate or EC2 instances.
+
+3. **ECR (Elastic Container Registry)**:
+
+   - Fully managed Docker container registry.
+   - Use Cases: Storing, managing, and deploying Docker container images.
+   - Usage:
+     - Push Docker images to ECR.
+     - Pull images from ECR in ECS or other environments.
+
+4. **RDS (Relational Database Service)**:
+
+   - Managed relational database service supporting various database engines.
+   - Use Cases: Hosting relational databases such as MySQL, PostgreSQL, Oracle, and SQL Server.
+   - Usage:
+     - Launch a new RDS instance via the AWS Management Console.
+     - Connect to the RDS instance from your application.
+
+5. **DocumentDB**:
+
+   - Managed NoSQL document database service compatible with MongoDB.
+   - Use Cases: Storing JSON-like documents.
+   - Usage:
+     - Launch a new DocumentDB cluster via the AWS Management Console.
+     - Connect to the DocumentDB cluster using MongoDB drivers.
+
+6. **DynamoDB**:
+
+   - Fully managed NoSQL database service.
+   - Use Cases: Storing key-value and document data with high performance.
+   - Usage:
+     - Create a DynamoDB table via the AWS Management Console.
+     - Perform CRUD operations using AWS SDK or DynamoDB API.
+
+7. **Lambda Function**:
+
+   - Serverless compute service that runs code in response to events.
+   - Use Cases: Running backend logic, processing streams, and integrating with other AWS services.
+   - Usage:
+     - Write and deploy functions via the AWS Management Console or CLI.
+     - Trigger functions with events from S3, DynamoDB, SNS, etc.
+
+8. **API Gateway**:
+
+   - Fully managed service for creating, publishing, and securing APIs.
+   - Use Cases: Creating RESTful and WebSocket APIs.
+   - Usage:
+     - Define API resources and methods in API Gateway.
+     - Integrate with Lambda functions or other backend services.
+
+9. **AWS Kinesis**:
+
+   - Managed service for real-time data streaming.
+   - Use Cases: Real-time analytics, log and event data ingestion.
+   - Usage:
+     - Create a Kinesis stream via the AWS Management Console.
+     - Write producers to send data to the stream and consumers to process the data.
+
+10. **IAM (Identity and Access Management)**:
+
+    - Manages access to AWS services and resources securely.
+    - Use Cases: Creating users, roles, and policies for access control.
+    - Usage:
+      - Define and assign policies to users, groups, or roles via the AWS Management Console.
+
+11. **SNS (Simple Notification Service) and SQS (Simple Queue Service)**:
+    - **SNS**: Managed service for sending notifications.
+      - Use Cases: Sending email, SMS, or HTTP notifications.
+      - Usage:
+        - Create an SNS topic and subscribe endpoints to it.
+        - Publish messages to the topic.
+    - **SQS**: Managed message queuing service.
+      - Use Cases: Decoupling microservices and handling message queues.
+      - Usage:
+        - Create an SQS queue.
+        - Send messages to the queue and receive them from consumer applications.
+
+### Designing an Online Shopping System Using AWS Services
+
+#### High-Level Architecture Diagram
+
+![AWS Online Shopping Architecture](https://i.imgur.com/djM2XZb.jpg)
+
+### Explanation
+
+1. **Frontend**:
+
+   - **Web and Mobile Clients**: Interfaces for users to interact with the online shopping platform.
+
+2. **API Gateway**:
+
+   - Acts as a single entry point for client requests.
+   - Routes requests to appropriate backend services.
+
+3. **Backend Services**:
+
+   - **User Service (Lambda)**: Manages user accounts, authentication, and profiles.
+   - **Product Service (Lambda)**: Manages product catalog, inventory, and details.
+   - **Order Service (Lambda)**: Handles order creation, processing, and tracking.
+   - **Payment Service (Lambda)**: Manages payment processing and integration with payment gateways.
+   - **Notification Service (Lambda + SNS)**: Sends notifications to users about order status, promotions, etc.
+   - **Search Service (ElasticSearch)**: Provides search functionality for products.
+
+4. **Databases**:
+
+   - **RDS**: Stores relational data such as user accounts, orders, and transactions.
+   - **DynamoDB**: Stores product catalog and inventory information for fast access.
+   - **DocumentDB**: Stores JSON-like documents for product details and user preferences.
+
+5. **Storage**:
+
+   - **S3**: Stores static assets such as product images, videos, and documents.
+
+6. **Caching**:
+
+   - **ElastiCache (Redis)**: Caches frequently accessed data to reduce latency.
+
+7. **Analytics**:
+
+   - **Kinesis**: Ingests real-time data streams for analytics.
+   - **Data Processing (Lambda)**: Processes data streams for insights and reporting.
+
+8. **IAM**:
+
+   - Manages access control for AWS resources and services.
+
+9. **Monitoring and Logging**:
+   - **CloudWatch**: Monitors and logs application and infrastructure metrics.
+   - **ELK Stack**: Aggregates, stores, and visualizes logs for troubleshooting and analysis.
