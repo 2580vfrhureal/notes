@@ -3379,3 +3379,144 @@ public class UserControllerIntegrationTest {
 - **Encryption vs Hashing vs Encoding**: Protecting data vs creating fixed-size representations vs transforming data formats.
 - **JWT**: Token for secure information exchange.
 - **OAuth2**: Framework for secure authorization.
+
+## Homework16
+
+### Point-to-Point vs Publish-Subscribe Model
+
+**Point-to-Point Model**:
+
+- **Definition**: Messages are sent from a producer to a specific queue, and each message is consumed by a single consumer.
+- **Pros**:
+  - Simple and straightforward message delivery.
+  - Guarantees that each message is processed only once.
+- **Cons**:
+  - Limited scalability as each message is consumed by a single consumer.
+  - Can become a bottleneck if the single consumer is slow or fails.
+
+**Publish-Subscribe Model**:
+
+- **Definition**: Messages are published to a topic, and multiple subscribers can consume the same message independently.
+- **Pros**:
+  - Highly scalable as multiple consumers can process messages simultaneously.
+  - Suitable for real-time updates and broadcasting messages to multiple consumers.
+- **Cons**:
+  - More complex to manage compared to point-to-point.
+  - Possible duplication of messages across consumers, which might require additional handling.
+
+### Why Use a Message System
+
+**Reasons**:
+
+- **Decoupling**: Producers and consumers are decoupled, allowing them to evolve independently.
+- **Scalability**: Messages can be processed asynchronously, improving system scalability.
+- **Resilience**: Message systems can buffer messages during peak loads or failures.
+- **Flexibility**: Supports various communication patterns such as request-response, pub-sub, and more.
+
+### Kafka Architecture
+
+**Components**:
+
+- **Producers**: Send records to Kafka topics.
+- **Consumers**: Read records from Kafka topics.
+- **Topics**: Logical channels to which records are sent.
+- **Partitions**: Sub-divisions of topics to allow parallelism.
+- **Brokers**: Kafka servers that store data and serve client requests.
+- **ZooKeeper**: Manages metadata and cluster state.
+
+**How Kafka Works**:
+
+- Producers send records to Kafka topics, which are divided into partitions.
+- Consumers read records from these partitions.
+- Brokers manage the storage and retrieval of records.
+- ZooKeeper coordinates the Kafka cluster.
+
+### Message Accumulation in Kafka: Consumer Can't Keep Up
+
+**Solutions**:
+
+1. **Scale Consumers**: Add more consumer instances to read from the partitions in parallel.
+2. **Optimize Consumer Logic**: Improve the performance of the consumer application to process messages faster.
+3. **Increase Partitions**: Increase the number of partitions for better parallelism (requires rebalancing).
+4. **Back Pressure Handling**: Implement back pressure mechanisms to slow down producers or buffer messages.
+
+### Kafka and Expired Data
+
+**Data Expiry in Kafka**:
+
+- Kafka uses log retention policies to manage data expiry.
+- **Log Retention**: Configurable based on time (`log.retention.hours`) or size (`log.retention.bytes`).
+- **Segment Deletion**: Old log segments are deleted once they exceed the retention period or size.
+
+### Data Volume in Kafka
+
+**Handling High Data Volume**:
+
+- Kafka is designed to handle high-throughput and large-scale data streams.
+- Scaling Kafka involves:
+  - Increasing the number of partitions.
+  - Adding more brokers to distribute load.
+  - Configuring appropriate retention policies.
+
+### Calculating Partition Number
+
+**Factors to Consider**:
+
+1. **Throughput**: Higher throughput requires more partitions for parallel processing.
+2. **Consumer Parallelism**: Number of consumers or consumer groups should align with the number of partitions.
+3. **Message Size**: Larger messages might need fewer partitions.
+4. **Load Distribution**: Ensure even distribution of load across partitions.
+
+**Rule of Thumb**:
+
+- Start with a moderate number of partitions (e.g., 10-50) and monitor performance.
+- Scale up based on observed load and processing capacity.
+
+### AWS SQS vs RabbitMQ vs Kafka
+
+**AWS SQS (Simple Queue Service)**:
+
+- **Type**: Managed message queuing service.
+- **Use Case**: Simple queueing, decoupling microservices, batch processing.
+- **Pros**: Fully managed, scales automatically, integrates with other AWS services.
+- **Cons**: Limited to point-to-point messaging, no built-in support for pub-sub.
+
+**RabbitMQ**:
+
+- **Type**: Open-source message broker.
+- **Use Case**: Complex routing (direct, fanout, topic, headers), pub-sub, request-response.
+- **Pros**: Flexible routing, supports multiple protocols (AMQP, MQTT, STOMP).
+- **Cons**: Requires management, not as scalable as Kafka for high-throughput scenarios.
+
+**Kafka**:
+
+- **Type**: Distributed streaming platform.
+- **Use Case**: High-throughput messaging, event sourcing, stream processing.
+- **Pros**: High scalability, durability, designed for high throughput.
+- **Cons**: More complex to set up and manage, not designed for low-latency, real-time messaging.
+
+### AWS SNS vs SQS
+
+**AWS SNS (Simple Notification Service)**:
+
+- **Type**: Managed pub-sub messaging service.
+- **Use Case**: Broadcasting messages to multiple subscribers, mobile push notifications, email notifications.
+- **Pros**: Easy to set up, integrates with SQS for fan-out patterns, supports multiple protocols (HTTP, SMS, email, Lambda).
+- **Cons**: Limited to pub-sub, no ordering guarantees.
+
+**AWS SQS (Simple Queue Service)**:
+
+- **Type**: Managed message queuing service.
+- **Use Case**: Decoupling microservices, ensuring message delivery, batch processing.
+- **Pros**: Fully managed, supports at-least-once delivery, scales automatically.
+- **Cons**: No built-in support for pub-sub, requires additional logic for complex routing.
+
+### Summary
+
+- **Point-to-Point vs Publish-Subscribe**: Different message delivery models with unique pros and cons.
+- **Message Systems**: Decoupling, scalability, resilience, and flexibility benefits.
+- **Kafka Architecture**: Components and operations of Kafka.
+- **Kafka Solutions**: Handling message accumulation and data expiry.
+- **Data Volume and Partitioning in Kafka**: Managing high data volumes and calculating partitions.
+- **Comparison of Messaging Systems**: Differences between AWS SQS, RabbitMQ, and Kafka.
+- **SNS vs SQS**: Different use cases and advantages of AWS messaging services.
