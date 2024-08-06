@@ -3037,3 +3037,117 @@ public class MyController {
 9. **Monitoring and Logging**:
    - **CloudWatch**: Monitors and logs application and infrastructure metrics.
    - **ELK Stack**: Aggregates, stores, and visualizes logs for troubleshooting and analysis.
+
+## Homework14
+
+### CI/CD (Continuous Integration/Continuous Deployment)
+
+**CI/CD**:
+
+- **Continuous Integration (CI)**: A development practice where developers integrate code into a shared repository frequently. Each integration is verified by an automated build and automated tests to detect issues early.
+- **Continuous Deployment (CD)**: The practice of automatically deploying every code change to production after passing all stages of the build and test process. This ensures that software can be released reliably at any time.
+
+**Tools Used**:
+
+- **Jenkins**: An open-source automation server for building, deploying, and automating software development projects.
+- **GitLab CI/CD**: A built-in CI/CD tool provided by GitLab.
+- **Travis CI**: A hosted continuous integration service used to build and test software projects hosted on GitHub.
+- **CircleCI**: A CI/CD tool that automates the process of software development.
+- **Bamboo**: A CI/CD server by Atlassian that provides continuous integration and deployment services.
+
+### How Jenkins Works
+
+**Jenkins**:
+
+- Jenkins is an automation server that helps automate parts of the software development process related to building, testing, and deploying, facilitating continuous integration and continuous delivery.
+
+**How Jenkins Works**:
+
+1. **Install Jenkins**: Set up Jenkins on a server (can be on-premises or cloud-based).
+2. **Create a Job**: Define a job that specifies a project’s build, test, and deployment process.
+3. **Source Code Management**: Integrate Jenkins with a version control system like Git.
+4. **Build Triggers**: Configure triggers such as periodic builds, webhook triggers on repository changes, or manual triggers.
+5. **Build Steps**: Define steps to compile, test, and package the code.
+6. **Post-Build Actions**: Define actions such as notifications, deployments, or integrations with other tools after the build completes.
+
+### Team Structure
+
+**Typical Team Structure**:
+
+- **Product Owner**: Defines the product vision, backlog, and priorities.
+- **Scrum Master**: Facilitates the Scrum process, removes impediments.
+- **Developers**: Write and maintain the code.
+- **QA/Testers**: Ensure the quality of the product by writing and running tests.
+- **UX/UI Designers**: Design the user interface and user experience.
+- **DevOps Engineers**: Manage CI/CD pipelines, deployment, and infrastructure.
+- **Stakeholders**: Include end-users, clients, and other parties interested in the project.
+
+### Agile Methodology
+
+**Agile Methodology**:
+
+- An iterative approach to project management and software development that helps teams deliver value to their customers faster and with fewer headaches. Instead of betting everything on a "big bang" launch, an agile team delivers work in small, but consumable, increments.
+
+**Agile Principles**:
+
+- Customer satisfaction through early and continuous delivery of valuable software.
+- Welcome changing requirements, even late in development.
+- Deliver working software frequently, with a preference for shorter timescales.
+- Close, daily cooperation between business people and developers.
+- Projects are built around motivated individuals who should be trusted.
+- Face-to-face conversation is the best form of communication.
+- Working software is the primary measure of progress.
+- Sustainable development, able to maintain a constant pace.
+- Continuous attention to technical excellence and good design.
+- Simplicity—the art of maximizing the amount of work not done—is essential.
+- Self-organizing teams.
+- Regular adaptation to changing circumstances.
+
+### Agile vs Waterfall
+
+**Agile**:
+
+- **Iterative and Incremental**: Development in small increments with customer feedback.
+- **Flexibility**: Adaptable to changes even late in the project.
+- **Collaboration**: Close collaboration between cross-functional teams.
+- **Delivery**: Frequent delivery of working software.
+
+**Waterfall**:
+
+- **Sequential**: Linear and sequential approach with distinct phases (requirements, design, implementation, verification, maintenance).
+- **Rigidity**: Difficult to accommodate changes once the project is in the later phases.
+- **Documentation**: Heavy documentation at each stage.
+- **Delivery**: Delivery of the complete product at the end of the development cycle.
+
+### Solving Difficulties
+
+**Steps to Solve Difficulties**:
+
+1. **Analyze the Problem**: Understand the problem thoroughly before attempting to solve it.
+2. **Research**: Look for similar issues or solutions online.
+3. **Break Down the Problem**: Break the problem into smaller, manageable parts.
+4. **Ask for Help**: Seek assistance from teammates or mentors.
+5. **Experiment and Iterate**: Try different approaches and iterate based on feedback.
+6. **Documentation**: Document the problem and solutions for future reference.
+
+### Handling Conflicts with Teammates
+
+**Steps to Handle Conflicts**:
+
+1. **Stay Calm and Professional**: Approach the conflict with a calm and professional attitude.
+2. **Communicate Openly**: Discuss the issue directly with the teammate involved.
+3. **Listen Actively**: Understand their perspective and concerns.
+4. **Seek Common Ground**: Find areas of agreement and build from there.
+5. **Involve a Mediator**: If necessary, involve a third party like a manager or Scrum Master to mediate.
+6. **Focus on Solutions**: Work collaboratively to find a solution that benefits the team and project.
+
+### Handling Work Not Finished Before Deadline
+
+**Steps to Take if You Can't Finish Work Before Deadline**:
+
+1. **Prioritize Tasks**: Focus on the most critical tasks that need to be completed.
+2. **Communicate Early**: Inform your team and stakeholders about potential delays as soon as possible.
+3. **Seek Help**: Ask for assistance from teammates to share the workload.
+4. **Negotiate Deadline**: If possible, negotiate an extension for the deadline.
+5. **Break Down Tasks**: Break down remaining tasks into smaller parts to manage them better.
+6. **Reflect and Learn**: After the deadline, reflect on what caused the delay and how to improve in the future.
