@@ -2621,4 +2621,197 @@ public class MyController {
   SELECT column1 FROM table2;
   ```
 
-These explanations cover the core concepts related to database interactions, ORM, SQL joins, and caching mechanisms. If you have more questions or need further clarification, feel free to ask!
+## Homework12
+
+### System Design: Designing YouTube
+
+#### High-Level Architecture Diagram
+
+![YouTube System Design](https://i.imgur.com/XVZlT5G.jpg)
+
+### Explanation
+
+1. **User Interaction Layer**:
+
+   - **Web and Mobile Clients**: User interfaces for web browsers and mobile apps to interact with the system.
+   - **CDN (Content Delivery Network)**: Distributes video content closer to users to reduce latency and improve streaming quality.
+
+2. **API Gateway**:
+
+   - Acts as a single entry point for all client requests, routing them to appropriate microservices. It handles authentication, rate limiting, and logging.
+
+3. **Microservices**:
+
+   - **User Service**: Manages user information, authentication, and authorization.
+   - **Video Service**: Handles video upload, storage, processing, and streaming.
+   - **Comment Service**: Manages comments on videos.
+   - **Recommendation Service**: Provides video recommendations based on user behavior and preferences.
+   - **Notification Service**: Sends notifications to users about various events (e.g., new video uploads, comments).
+   - **Analytics Service**: Collects and processes data for analytics and insights.
+   - **Search Service**: Indexes videos and metadata to support search functionality.
+   - **Ad Service**: Manages advertisements and integrates with third-party ad networks.
+
+4. **Databases**:
+
+   - **User Database**: Stores user-related information.
+   - **Video Metadata Database**: Stores metadata about videos, such as title, description, tags, etc.
+   - **Video Storage**: Stores the actual video files.
+   - **Comment Database**: Stores comments on videos.
+   - **Analytics Database**: Stores data for analytics and reporting.
+
+5. **Infrastructure Services**:
+   - **Config Server**: Centralized configuration management for microservices.
+   - **Service Discovery**: Helps microservices discover each other. Example tools: Eureka, Consul, Zookeeper.
+   - **Tracing System**: Used for monitoring and tracing requests across microservices. Example tools: Zipkin, Sleuth.
+   - **Client-Side Load Balancer**: Distributes client requests across multiple instances of a service. Example tool: Ribbon.
+   - **Logging and Monitoring**: ELK stack (Elasticsearch, Logstash, Kibana) for log aggregation, storage, and visualization.
+   - **Circuit Breaker**: Provides fallback mechanisms to handle service failures. Example tools: Hystrix, Resilience4j.
+
+### Microservice Architecture
+
+**Microservice Architecture**:
+
+- **Definition**: An architectural style that structures an application as a collection of small, loosely coupled, and independently deployable services.
+- **Why Use Microservices**:
+  - **Scalability**: Individual services can be scaled independently based on demand.
+  - **Flexibility**: Different services can use different technologies and can be deployed independently.
+  - **Fault Isolation**: Failures in one service do not impact others.
+  - **Development Speed**: Smaller teams can work on different services simultaneously, speeding up development.
+
+### Key Concepts and Tools
+
+1. **Config Server**:
+
+   - **Definition**: Centralized configuration management for distributed systems.
+   - **Usage**: Spring Cloud Config Server can be used to manage configuration properties centrally.
+   - **Demo Code**:
+     ```java
+     @EnableConfigServer
+     @SpringBootApplication
+     public class ConfigServerApplication {
+         public static void main(String[] args) {
+             SpringApplication.run(ConfigServerApplication.class, args);
+         }
+     }
+     ```
+
+2. **Service Discovery**:
+
+   - **Eureka**:
+     ```java
+     @EnableEurekaServer
+     @SpringBootApplication
+     public class EurekaServerApplication {
+         public static void main(String[] args) {
+             SpringApplication.run(EurekaServerApplication.class, args);
+         }
+     }
+     ```
+   - **Consul**:
+     ```yaml
+     spring:
+       cloud:
+         consul:
+           host: localhost
+           port: 8500
+     ```
+   - **Zookeeper**:
+     ```java
+     @EnableDiscoveryClient
+     @SpringBootApplication
+     public class ZookeeperClientApplication {
+         public static void main(String[] args) {
+             SpringApplication.run(ZookeeperClientApplication.class, args);
+         }
+     }
+     ```
+
+3. **Zipkin and Sleuth**:
+
+   - **Zipkin**: Distributed tracing system.
+     ```yaml
+     zipkin:
+       base-url: http://localhost:9411
+     ```
+   - **Sleuth**: Adds trace and span IDs to logs.
+     ```java
+     @SpringBootApplication
+     public class SleuthApplication {
+         public static void main(String[] args) {
+             SpringApplication.run(SleuthApplication.class, args);
+         }
+     }
+     ```
+
+4. **Ribbon**:
+
+   - **Definition**: Client-side load balancer.
+   - **Usage**: Automatically distributes the load among available service instances.
+     ```java
+     @Bean
+     @LoadBalanced
+     public RestTemplate restTemplate() {
+         return new RestTemplate();
+     }
+     ```
+
+5. **ELK Stack**:
+
+   - **Elasticsearch**: Search and analytics engine.
+   - **Logstash**: Log pipeline tool.
+   - **Kibana**: Visualization tool.
+   - **Usage**: Collect logs using Logstash, store them in Elasticsearch, and visualize with Kibana.
+
+6. **Circuit Breaker**:
+   - **Hystrix**: Provides fallback options for failed requests.
+     ```java
+     @EnableHystrix
+     @SpringBootApplication
+     public class HystrixApplication {
+         public static void main(String[] args) {
+             SpringApplication.run(HystrixApplication.class, args);
+         }
+     }
+     ```
+   - **Resilience4j**: Lightweight, easy-to-use fault tolerance library.
+     ```java
+     @SpringBootApplication
+     public class Resilience4jApplication {
+         public static void main(String[] args) {
+             SpringApplication.run(Resilience4jApplication.class, args);
+         }
+     }
+     ```
+
+### Definitions and Key Concepts
+
+1. **Config Server**:
+
+   - Centralized configuration for distributed systems.
+   - Provides configuration properties to all microservices from a central location.
+
+2. **Service Discovery**:
+
+   - Mechanism for microservices to find and communicate with each other.
+   - **Eureka**: Netflix's service discovery server.
+   - **Consul**: Service discovery and configuration management tool.
+   - **Zookeeper**: Centralized service for maintaining configuration information.
+
+3. **Zipkin and Sleuth**:
+
+   - **Zipkin**: Distributed tracing system to gather timing data.
+   - **Sleuth**: Adds trace and span IDs to logs for tracking.
+
+4. **Ribbon**:
+
+   - Client-side load balancer that helps in distributing the load across multiple service instances.
+
+5. **ELK Stack**:
+
+   - **Elasticsearch**: Distributed search and analytics engine.
+   - **Logstash**: Server-side data processing pipeline.
+   - **Kibana**: Visualization tool for Elasticsearch data.
+
+6. **Circuit Breaker**:
+   - **Hystrix**: Provides fallback methods to handle failures.
+   - **Resilience4j**: A lightweight fault tolerance library inspired by Hystrix.
