@@ -2387,3 +2387,238 @@ public class MyController {
   - **Consistency**: Every read receives the most recent write.
   - **Availability**: Every request receives a response, without guarantee that it contains the most recent write.
   - **Partition Tolerance**: The system continues to operate despite network partitions.
+
+## Homework11
+
+### Statement vs PreparedStatement vs CallableStatement
+
+**Statement**:
+
+- Used to execute simple SQL queries without parameters.
+- Example:
+  ```java
+  Statement stmt = connection.createStatement();
+  ResultSet rs = stmt.executeQuery("SELECT * FROM users");
+  ```
+
+**PreparedStatement**:
+
+- Used to execute parameterized SQL queries.
+- More efficient for repeated execution and helps prevent SQL injection.
+- Example:
+  ```java
+  String query = "SELECT * FROM users WHERE id = ?";
+  PreparedStatement pstmt = connection.prepareStatement(query);
+  pstmt.setInt(1, 1);
+  ResultSet rs = pstmt.executeQuery();
+  ```
+
+**CallableStatement**:
+
+- Used to execute stored procedures in the database.
+- Example:
+  ```java
+  CallableStatement cstmt = connection.prepareCall("{call getUser(?, ?)}");
+  cstmt.setInt(1, 1);
+  cstmt.registerOutParameter(2, Types.VARCHAR);
+  cstmt.execute();
+  String name = cstmt.getString(2);
+  ```
+
+### How to Prevent SQL Injection
+
+1. **Use Prepared Statements**:
+
+   - Parameterized queries ensure that inputs are treated as data, not executable code.
+
+2. **Input Validation**:
+
+   - Validate and sanitize user inputs to ensure they conform to expected formats.
+
+3. **Stored Procedures**:
+
+   - Use stored procedures to encapsulate SQL logic and limit direct SQL execution.
+
+4. **Least Privilege Principle**:
+
+   - Restrict database user permissions to only what is necessary.
+
+5. **Use ORM Frameworks**:
+   - ORM frameworks like Hibernate manage SQL generation and parameterization automatically.
+
+### What is ORM
+
+**ORM (Object-Relational Mapping)**:
+
+- A programming technique for converting data between incompatible type systems (objects and relational databases).
+- Allows developers to work with database data as objects.
+
+### JPA vs Hibernate
+
+**JPA (Java Persistence API)**:
+
+- A specification for ORM in Java.
+- Defines the standard for object-relational mapping and entity management.
+
+**Hibernate**:
+
+- An implementation of the JPA specification.
+- Provides additional features beyond JPA, like caching, better performance, and more mapping options.
+
+### Persistent State in Entity Lifecycle
+
+1. **New/Transient**: The entity is not associated with any persistence context, and it is not stored in the database.
+2. **Managed/Persistent**: The entity is associated with a persistence context and will be synchronized with the database.
+3. **Detached**: The entity was once associated with a persistence context but is now detached. Changes made to the entity are not automatically synchronized with the database.
+4. **Removed**: The entity is scheduled for deletion from the database.
+
+### Mapping Relationship
+
+1. **One-to-One**:
+
+   - A single entity is associated with another single entity.
+   - Example:
+     ```java
+     @OneToOne
+     @JoinColumn(name = "address_id")
+     private Address address;
+     ```
+
+2. **One-to-Many**:
+
+   - A single entity is associated with multiple entities.
+   - Example:
+     ```java
+     @OneToMany(mappedBy = "department")
+     private List<Employee> employees;
+     ```
+
+3. **Many-to-One**:
+
+   - Multiple entities are associated with a single entity.
+   - Example:
+     ```java
+     @ManyToOne
+     @JoinColumn(name = "department_id")
+     private Department department;
+     ```
+
+4. **Many-to-Many**:
+   - Multiple entities are associated with multiple entities.
+   - Example:
+     ```java
+     @ManyToMany
+     @JoinTable(name = "student_course",
+                joinColumns = @JoinColumn(name = "student_id"),
+                inverseJoinColumns = @JoinColumn(name = "course_id"))
+     private List<Course> courses;
+     ```
+
+### Cascade Type
+
+**Cascade Types**:
+
+- Defines how operations like persist, merge, remove, refresh, and detach should be cascaded from a parent entity to related entities.
+
+**Types**:
+
+1. **ALL**: Apply all operations.
+2. **PERSIST**: Cascade persist operation.
+3. **MERGE**: Cascade merge operation.
+4. **REMOVE**: Cascade remove operation.
+5. **REFRESH**: Cascade refresh operation.
+6. **DETACH**: Cascade detach operation.
+
+### Fetch Type
+
+**Fetch Types**:
+
+- Defines when related entities should be loaded.
+
+**Types**:
+
+1. **EAGER**: Loads related entities immediately.
+2. **LAZY**: Loads related entities on-demand.
+
+### First-Level Cache vs Second-Level Cache
+
+**First-Level Cache**:
+
+- Also known as session cache.
+- Specific to the Hibernate session.
+- Automatically managed by Hibernate.
+
+**Second-Level Cache**:
+
+- Shared across sessions in the same session factory.
+- Must be explicitly configured.
+- Improves performance by reducing database access.
+
+### SQL Joins
+
+**Left Join**:
+
+- Returns all records from the left table and matched records from the right table.
+- Example:
+  ```sql
+  SELECT * FROM A LEFT JOIN B ON A.id = B.id;
+  ```
+
+**Right Join**:
+
+- Returns all records from the right table and matched records from the left table.
+- Example:
+  ```sql
+  SELECT * FROM A RIGHT JOIN B ON A.id = B.id;
+  ```
+
+**Inner Join**:
+
+- Returns only the records that have matching values in both tables.
+- Example:
+  ```sql
+  SELECT * FROM A INNER JOIN B ON A.id = B.id;
+  ```
+
+**Outer Join**:
+
+- Returns all records when there is a match in either left or right table.
+- Full Outer Join is not supported in some databases.
+- Example:
+  ```sql
+  SELECT * FROM A FULL OUTER JOIN B ON A.id = B.id;
+  ```
+
+**Cross Join**:
+
+- Returns the Cartesian product of the two tables.
+- Example:
+  ```sql
+  SELECT * FROM A CROSS JOIN B;
+  ```
+
+### Union vs Union All
+
+**Union**:
+
+- Combines the result set of two or more SELECT statements.
+- Removes duplicate rows.
+- Example:
+  ```sql
+  SELECT column1 FROM table1
+  UNION
+  SELECT column1 FROM table2;
+  ```
+
+**Union All**:
+
+- Combines the result set of two or more SELECT statements.
+- Includes all duplicates.
+- Example:
+  ```sql
+  SELECT column1 FROM table1
+  UNION ALL
+  SELECT column1 FROM table2;
+  ```
+
+These explanations cover the core concepts related to database interactions, ORM, SQL joins, and caching mechanisms. If you have more questions or need further clarification, feel free to ask!
