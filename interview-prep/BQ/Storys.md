@@ -381,3 +381,30 @@ My task was to design and implement a system that simplified log management and 
 The new dynamic logging system simplified the process of managing logs in the application. The team no longer needed to restart the application to change log levels, which reduced downtime and improved overall
 
 productivity. The feature flag integration made it easy to manage log levels across different environments, and the REST API provided a fast and intuitive way to adjust logging during incidents. The solution not only met the immediate needs of the team but also simplified the process of log management, making it more scalable and easier to maintain in the long run.
+
+### **Amazon Leadership Principle: "Have Backbone; Disagree and Commit"**
+
+**Question: Tell me about a time when you had a disagreement with a colleague or team member and how you handled it.**
+
+**Situation:**  
+We were in the process of designing a new feature for our internal application that needed to handle a high volume of real-time transactions. Given the scalability and performance requirements, I strongly advocated for using **Amazon DynamoDB**. From my experience, DynamoDB's ability to handle high-velocity data with low latency and automatic scaling made it the ideal choice for our use case. However, one of my colleagues, who was leading the database management team, argued that **Amazon RDS** (a relational database) would be a more cost-effective solution, even though it required more manual management to achieve similar performance. This created a conflict between choosing a solution that prioritized scalability and ease of use (DynamoDB) versus one that emphasized cost-efficiency (RDS).
+
+**Task:**  
+As the advocate for DynamoDB, my task was to make a strong case for why it was the right choice for this feature. However, I also needed to carefully consider my colleague's concerns about cost and operational complexity, and ultimately come to a decision that balanced both performance and budget constraints.
+
+**Action:**
+
+1. **Evaluating DynamoDB's Benefits:**  
+   I started by thoroughly researching DynamoDB's advantages for our use case. I highlighted its automatic scaling, ability to handle high write-throughput with low latency, and minimal operational overhead. Given the anticipated growth in transaction volume, I believed that DynamoDB's flexibility and performance would outweigh the higher cost.
+
+2. **Analyzing RDS's Cost Efficiency:**  
+   At the same time, I acknowledged my colleague's concerns about the cost difference. I worked closely with him to perform a detailed cost analysis for both DynamoDB and RDS over the projected lifespan of the feature. We considered factors like storage, read/write capacity, and the ongoing operational management required for RDS. The analysis showed that while DynamoDB was technically superior in performance, RDS could meet our performance needs with significant cost savings—about 30% less expensive over the first year.
+
+3. **Open Discussion and Collaboration:**  
+   I facilitated a discussion where both of us presented our findings to the team. I emphasized that DynamoDB's automatic scaling could reduce long-term operational effort and allow the team to focus on feature development rather than database management. However, my colleague effectively demonstrated that RDS could handle the current and foreseeable load with the right optimizations, and the cost savings could be better utilized in other areas of the project.
+
+4. **Agreeing on a Pragmatic Approach:**  
+   After considering all the data, I recognized that starting with RDS would allow us to balance both cost and performance effectively, especially in the early stages of the project. We agreed to proceed with RDS for the initial implementation, but with a plan in place to migrate to DynamoDB if our transaction volume grew beyond RDS’s capacity. This compromise allowed us to leverage RDS’s cost advantages while keeping the option to switch to DynamoDB if needed.
+
+**Result:**  
+By taking the time to thoroughly evaluate both options and engaging in open, constructive discussions, we reached a decision that benefited the project as a whole. RDS was implemented successfully, meeting the performance requirements and saving approximately 30% in database costs compared to DynamoDB. The feature was launched on time and within budget, and the flexibility of the plan allowed us to monitor the system’s growth and prepare for potential scaling challenges in the future. This experience taught me the importance of listening to different perspectives, even when I had a strong initial preference, and of being willing to adapt to the best solution for the business.
