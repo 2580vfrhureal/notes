@@ -283,4 +283,101 @@ I was tasked with identifying the cause of these 500 errors and implementing a s
 **Result:**  
 The implementation of the custom error handling resolved the issue, eliminating the 500 errors and ensuring that invalid customer operations now correctly triggered 405 errors. This improvement not only enhanced the stability and performance of the platform but also provided more accurate feedback to customers, reducing confusion and unnecessary strain on the system. The successful resolution of this issue reinforced the reliability of our service and demonstrated our team’s ability to quickly and effectively address complex technical challenges. The other team’s alert, which initially identified the problem, confirmed that our proactive response had fully mitigated the issue.
 
-This version of the story clearly highlights how you addressed a critical issue that was initially identified by another team, showcasing your problem-solving skills, technical expertise, and ability to collaborate across teams to ensure the platform’s integrity and customer satisfaction.
+**"Dive Deep,"** **"Ownership,"** **"Bias for Action,"** and **"Invent and Simplify."**
+
+### **Amazon Leadership Principle: "Dive Deep"**
+
+**Question: Tell me about a time when you had to dive deep to solve a complex problem.**
+
+**Situation:**  
+In one of my recent projects, I was tasked with improving the logging system for a Spring Boot application that was integrated with the ELK stack (Elasticsearch, Logstash, Kibana). The existing logging configuration was static, making it difficult to troubleshoot issues effectively during high-traffic periods. This was especially problematic because our team needed to analyze logs in real-time for performance monitoring and debugging, and the overwhelming volume of logs made it hard to pinpoint specific issues. Additionally, the static logging levels meant that the system was either too verbose or not detailed enough, depending on the situation.
+
+**Task:**  
+My task was to implement a dynamic logging system that allowed the application to adjust its log levels at runtime. The goal was to ensure that during normal operations, the logging would be minimal (e.g., `INFO` level), but when debugging or handling critical issues, we could increase the verbosity (e.g., `DEBUG` level) without needing to restart the application. This would enable us to dive deep into specific issues quickly and efficiently while maintaining overall system performance.
+
+**Action:**  
+I started by analyzing the current logging configuration, which used Log4j2 with SLF4J, and determined that it lacked the flexibility to adjust log levels dynamically. After researching different approaches, I designed a solution that utilized Log4j2’s programmatic API, allowing us to change log levels at runtime. Here’s what I did:
+
+1. **Feature Flag Integration:** I introduced a feature flag service that controlled whether dynamic logging was enabled. This flag could be toggled via a configuration file or an environment variable, providing flexibility in different environments (e.g., development, production).
+2. **Log Level Adjustment Service:** I developed a `DynamicLogLevelService` that checked the feature flag and adjusted the log levels accordingly using Log4j2’s `LoggerContext`. This service also had a scheduled task that periodically checked the configuration, ensuring that log levels were always aligned with the current operational needs.
+
+3. **REST API for Manual Overrides:** To give the team real-time control over the logging system, I implemented a REST API that allowed engineers to manually change the log level at runtime without needing to restart the application. This API was particularly useful during critical incidents where we needed to increase logging verbosity immediately.
+
+4. **Integration with ELK Stack:** I ensured that all logs, regardless of their verbosity, were properly forwarded to Logstash, which processed them and sent them to Elasticsearch for storage and analysis. This allowed the team to query and visualize the logs in Kibana effectively, even when the log level was set to `DEBUG`.
+
+**Result:**  
+The implementation of dynamic logging significantly improved our ability to troubleshoot issues quickly and efficiently. We were able to reduce the overall volume of logs during normal operations, which improved system performance, while still being able to dive deep into specific issues when necessary by increasing the log level dynamically. This solution led to a 40% reduction in time spent analyzing logs during incidents and increased the team's confidence in identifying and resolving issues in production. Additionally, the REST API for manual log level control became a valuable tool for our DevOps team during incident response.
+
+---
+
+### **Amazon Leadership Principle: "Ownership"**
+
+**Question: Describe a time when you took ownership of a project.**
+
+**Situation:**  
+In a critical project for a Spring Boot application integrated with the ELK stack, we were facing challenges with the existing static logging system. During periods of high traffic, we struggled to manage the volume of logs effectively, which hindered our ability to troubleshoot issues. The static log levels also meant that we couldn’t adjust the verbosity of the logs in real-time, which was crucial for debugging and performance monitoring. This logging issue was not originally in my area of responsibility, but I saw the impact it was having on the team and took ownership of solving it.
+
+**Task:**  
+I took it upon myself to redesign the logging system, ensuring it was flexible, dynamic, and scalable. My objective was to implement a solution that allowed the team to adjust log levels at runtime, enabling real-time troubleshooting without affecting application performance.
+
+**Action:**
+
+1. **Designing the Solution:** I researched different approaches to dynamic logging and decided on using Log4j2’s programmatic API. I designed a solution where log levels could be adjusted at runtime based on feature flags or manual overrides.
+2. **Implementation:** I implemented the `DynamicLogLevelService` and integrated it with a feature flag service. This allowed the log level to be controlled by a configuration file or an environment variable, making it easy to change the log level across different environments (e.g., development, staging, production).
+
+3. **Manual Override API:** I developed a REST API that allowed the team to manually adjust the log level in real-time. This was especially useful during incidents, where we needed to increase logging verbosity immediately to capture more details for troubleshooting.
+
+4. **Collaboration and Documentation:** I documented the entire system, ensuring that the team understood how to use the new logging features. I also collaborated with the DevOps team to ensure the new logging system was integrated smoothly into our CI/CD pipeline and monitoring tools.
+
+**Result:**  
+The dynamic logging system became a core part of our application infrastructure. It improved the team's ability to troubleshoot issues in real-time, reduced the overhead of unnecessary logging, and empowered the DevOps team to take control of logging during critical incidents. This ownership not only solved the immediate logging issue but also created a long-term solution that could scale with the application. The success of this project led to its adoption in other services across the organization, further demonstrating the impact of taking ownership and delivering value.
+
+---
+
+### **Amazon Leadership Principle: "Bias for Action"**
+
+**Question: Give me an example of when you had to make a quick decision with limited information.**
+
+**Situation:**  
+During the development of a Spring Boot service, we were facing a production issue where our logs were not providing enough detail to identify the root cause of a performance bottleneck. The issue was causing slow response times and affecting the user experience. We couldn’t afford to wait for a full investigation to determine the best solution; we needed to act quickly to resolve the issue.
+
+**Task:**  
+I needed to quickly increase the verbosity of our logging system to capture more detailed logs that could help us identify the root cause of the performance issue. The challenge was to do this without restarting the application or causing additional overhead that could worsen the performance problem.
+
+**Action:**
+
+1. **Immediate Action:** I implemented a quick fix by adding a REST API to the Spring Boot service that allowed us to adjust the log level at runtime. This API enabled the team to change the log level to `DEBUG` without restarting the service, allowing us to capture detailed logs in real-time.
+
+2. **Minimizing Impact:** I ensured that the API could be accessed only by authorized personnel, and that the increased log verbosity would be limited to specific packages, minimizing the performance impact on the rest of the system.
+
+3. **Collaboration:** I communicated the change to the DevOps and monitoring teams, ensuring that they were ready to monitor the impact and revert the log level once the issue was identified.
+
+**Result:**  
+Within minutes of deploying the API, we were able to increase the log level to `DEBUG`, which provided the detailed information we needed to identify the root cause of the performance bottleneck. The quick decision to implement the API allowed us to resolve the issue within hours, preventing further impact on the user experience. The team appreciated the fast response, and the API became a valuable tool for future troubleshooting efforts.
+
+---
+
+### **Amazon Leadership Principle: "Invent and Simplify"**
+
+**Question: Describe a time when you invented something or simplified a process.**
+
+**Situation:**  
+The static logging system in our Spring Boot application was causing problems for the team. We either had too many logs, which made it difficult to find relevant information, or too few logs, which made it hard to troubleshoot issues. Additionally, changing log levels required a restart of the application, which was disruptive in production environments. I realized we needed a better solution that could dynamically adjust the log levels based on current needs without causing downtime.
+
+**Task:**  
+My task was to design and implement a system that simplified log management and allowed the team to adjust log levels at runtime without restarting the application. The goal was to make the logging system more flexible and responsive to the needs of the team.
+
+**Action:**
+
+1. **Simplification:** I created a `DynamicLogLevelService` that allowed log levels to be adjusted programmatically at runtime. This removed the need for application restarts when changing log levels and simplified the process of log management.
+
+2. **Feature Flag Integration:** I integrated the logging system with a feature flag service, allowing the team to control logging levels through a simple configuration change or environment variable. This made it easy to enable or disable detailed logging across different environments without changing the code.
+
+3. **REST API for Manual Control:** To further simplify the process, I implemented a REST API that allowed engineers to manually adjust log levels in real-time. This provided an intuitive and fast way to change logging verbosity during incidents.
+
+4. **Documentation and Training:** I documented the new logging system and provided training to the team on how to use the new features. This ensured that everyone could take advantage of the simplified logging process.
+
+**Result:**  
+The new dynamic logging system simplified the process of managing logs in the application. The team no longer needed to restart the application to change log levels, which reduced downtime and improved overall
+
+productivity. The feature flag integration made it easy to manage log levels across different environments, and the REST API provided a fast and intuitive way to adjust logging during incidents. The solution not only met the immediate needs of the team but also simplified the process of log management, making it more scalable and easier to maintain in the long run.
