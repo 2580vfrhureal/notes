@@ -408,3 +408,34 @@ As the advocate for DynamoDB, my task was to make a strong case for why it was t
 
 **Result:**  
 By taking the time to thoroughly evaluate both options and engaging in open, constructive discussions, we reached a decision that benefited the project as a whole. RDS was implemented successfully, meeting the performance requirements and saving approximately 30% in database costs compared to DynamoDB. The feature was launched on time and within budget, and the flexibility of the plan allowed us to monitor the system’s growth and prepare for potential scaling challenges in the future. This experience taught me the importance of listening to different perspectives, even when I had a strong initial preference, and of being willing to adapt to the best solution for the business.
+
+No problem! You can still demonstrate **ownership** without being in a formal leadership position. Ownership at Amazon doesn’t necessarily mean you have to be a team lead or manager. It’s about stepping up, taking responsibility for tasks, and driving results, even when it’s not directly in your job description. Here’s a revised story reflecting ownership from an individual contributor perspective:
+
+### **Amazon Leadership Principle: "Ownership"**
+
+**Question: Can you describe a situation where you took ownership of a project that was failing? What actions did you take to turn it around?**
+
+**Situation:**  
+In one of my previous roles as a software developer, I was part of a team responsible for building a new feature for an eCommerce platform. The project involved integrating a complex payment processing system that needed to be both secure and scalable. However, the project began facing significant delays due to technical challenges, and the development efforts were not producing the desired results. Our team was struggling with performance issues related to database queries, and the project was at risk of missing critical deadlines.
+
+Although I wasn’t the project lead, I saw that the project was in trouble and decided to take ownership of the performance issues, which were one of the main blockers for the team. I knew that resolving this problem could help get the project back on track.
+
+**Task:**  
+My task was to address the performance bottlenecks in the system, specifically focusing on optimizing database queries that were slowing down the payment processing flow. I wanted to ensure that the system could handle the required load while meeting the necessary security standards.
+
+**Action:**
+
+1. **Analyzing the Problem:**  
+   I started by diving deep into the codebase to identify the specific areas where the performance issues were occurring. I worked closely with the database team to review the queries being executed and identified several inefficiencies in how data was being retrieved and processed. Some queries were running too frequently, fetching more data than necessary, and not taking full advantage of indexing.
+
+2. **Optimizing the Queries:**  
+   After identifying the bottlenecks, I took ownership of optimizing the database queries. I rewrote some of the most inefficient queries, reducing the amount of data being fetched and optimizing the indexing strategies. I also implemented caching for frequently accessed data, which significantly reduced the number of database calls.
+
+3. **Collaborating with the Team:**  
+   Although I wasn’t the lead, I communicated my findings and improvements to the rest of the team. I shared the optimizations I made and explained how they could improve the overall performance of the system. By proactively sharing these updates, I helped the team see progress in an area that had previously been a major obstacle. I also made myself available to assist other developers who were working on related parts of the system.
+
+4. **Continuous Monitoring:**  
+   I set up monitoring tools to track the performance of the optimized queries in real-time. This allowed us to quickly identify any new performance issues and address them before they became larger problems. I regularly checked the metrics and ensured that the system was performing as expected under load.
+
+**Result:**  
+As a result of taking ownership of the performance optimization, the payment processing system saw a significant improvement in response times—up to 40% faster. This helped unblock other parts of the project, allowing the team to meet the revised deadline. Although I wasn’t the official project lead, my proactive approach to solving the performance issues played a key role in turning the project around and ensuring its success. The project was delivered on time, and the client was satisfied with the outcome. This experience taught me that ownership isn’t just about titles or positions; it’s about stepping up when needed, solving problems, and driving results.
