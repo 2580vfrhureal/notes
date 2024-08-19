@@ -229,3 +229,56 @@ My task was to find a way to simplify the development process by reducing the am
 
 **Result:**  
 By reusing the existing ETL component from another team’s repository, I significantly simplified our development process. We were able to deliver the new feature well ahead of schedule, saving approximately 30% of the estimated development time. Additionally, by reusing a tested and stable component, we reduced the risk of introducing new bugs. This not only accelerated our timeline but also allowed the team to focus on refining the feature rather than building the pipeline from scratch. My approach demonstrated how thoughtful reuse and collaboration across teams can simplify complex tasks and drive efficiency across the organization.
+
+### Monitoring data point
+
+**Situation:**  
+In my current role as a software engineer, I’ve often been assigned simple tasks, such as adding monitoring data points for various client types in our product. These tasks, while easy to implement, are time-consuming due to the strict release process in place. For example, one recent request from the product team was to add monitoring to report client type data to better understand the fulfillment rates across different platforms.
+
+This task, while straightforward, involved more than just writing code. After the implementation, I had to go through rigorous approval processes, including drafting deployment plans, conducting load tests, and preparing reports. The entire procedure took two full days to complete, despite the actual code change taking only a few minutes.
+
+**Task:**  
+I needed to find a way to streamline this process and increase the overall efficiency of adding monitoring data points. The goal was to reduce the amount of time spent on repetitive tasks and avoid unnecessary delays, while still adhering to the strict release guidelines.
+
+**Action:**  
+To address this challenge, I designed and implemented a dynamic, configurable monitoring tool. My approach was to create a general-purpose component that would allow us to define monitoring data points via a centralized configuration system. Here’s how it worked:
+
+1. **Modular Design:** I structured the monitoring component to accept any data fields, such as client type, channel type, price range, and more. The system could dynamically map these fields to their respective charts and data lines using a JSON configuration stored in our configuration management system (similar to Apollo).
+2. **Dynamic Configuration:** Instead of hardcoding monitoring data points, I allowed the fields to be configurable. By utilizing a JSON configuration model, product and operations teams could dynamically add or modify the monitoring fields without requiring a full code release. This configuration change could be deployed and take effect in minutes.
+
+3. **Scalability:** I built the system with scalability in mind, making it particularly useful for order fulfillment scenarios where many data points might need monitoring, including product types, discount types, client types, and so on. Over time, as the business evolved, the product team could easily enable monitoring for any of these fields without requiring my involvement.
+
+**Result:**  
+The introduction of this configurable monitoring tool significantly improved our efficiency. What previously took two days—due to the full deployment process—could now be accomplished in just a few minutes. By moving the control to a centralized configuration, we reduced the need for constant code changes and releases. This not only improved our operational agility but also empowered non-technical teams to adjust monitoring as needed.
+
+### Pagination
+
+**Situation:**  
+In my current role, I faced a challenge when dealing with pagination in a high-traffic system. We initially used the simple `MySQL LIMIT OFFSET` approach for pagination, which worked fine for basic scenarios where the dataset was relatively small. However, as our system scaled and users needed to query larger datasets, especially during peak traffic, we started experiencing significant performance degradation. The deep pagination queries were slow, putting a strain on the database and causing a negative impact on overall system performance.
+
+**Task:**  
+I needed to find a more efficient pagination solution that could handle high traffic and large datasets without compromising on performance. The solution had to be flexible enough to accommodate different business needs, such as scenarios where we had complex search requirements or the need for real-time data.
+
+**Action:**  
+I researched and experimented with different pagination techniques, tailoring them to specific use cases within our system. Here’s the approach I took:
+
+1. **Limit Offset Pagination:**  
+   This method remained our go-to for simple scenarios where users needed to jump to specific pages and view total record counts. However, I recognized its limitations for deep pagination, so I restricted its use to lightweight queries where deep pagination was unlikely.
+
+2. **Primary Key-Based Pagination:**  
+   For scenarios involving deep pagination, I introduced primary key-based pagination. Instead of relying on offset, I modified the queries to filter results based on the last seen primary key. This reduced the load on the database by narrowing the search range with each successive query. This method significantly improved performance and reduced the risk of slow queries during peak traffic.
+
+3. **HasMore Rolling Pagination:**  
+   In scenarios where users didn’t need to know the total number of records, such as infinite scrolling interfaces, I implemented a rolling pagination method. Instead of fetching total records, I retrieved one extra record per page to determine if more data existed (`hasMore = true`). This avoided the need for `SELECT COUNT(*)` queries and optimized performance for user interfaces that didn't require total record counts.
+
+4. **ElasticSearch Pagination:**  
+   For complex search scenarios where performance was critical, I leveraged ElasticSearch. Although ElasticSearch also supports pagination similar to MySQL, I carefully tuned the pagination depth to avoid performance degradation. This approach proved useful for both B2B and B2C scenarios where users often performed complex searches over large datasets. I also ensured that ElasticSearch indexes were kept up-to-date with MySQL, understanding the trade-offs between real-time data and performance.
+
+**Result:**  
+By implementing these different pagination strategies, I was able to optimize our system for various use cases:
+
+- The primary key-based pagination improved performance in high-traffic scenarios, reducing the load on our database.
+- Rolling pagination enhanced the user experience in apps with infinite scrolling, while simultaneously decreasing the overall query cost.
+- ElasticSearch-based pagination enabled us to handle complex search queries efficiently, especially for business-critical scenarios with large datasets.
+
+Ultimately, this flexible approach allowed our system to scale effectively, improved performance, and provided a better user experience. It also prevented potential outages during peak traffic, aligning with Amazon’s “Customer Obsession” and “Bias for Action” principles by ensuring our customers had a seamless experience.
