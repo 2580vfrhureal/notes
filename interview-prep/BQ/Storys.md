@@ -58,7 +58,7 @@ The dynamic logging system became an essential part of our infrastructure. It al
 Our team was designing a new feature for an internal application that needed to handle a high volume of real-time transactions. I strongly believed that **Amazon DynamoDB** was the best choice for this because it handles high-velocity data, scales automatically, and has low latency. However, one of my colleagues, who was in charge of database management, argued that **Amazon RDS** (a relational database) would be more cost-effective, even though it required more manual management to achieve similar performance. This created a conflict between prioritizing scalability and ease of use (DynamoDB) versus cost-efficiency (RDS).
 
 **Task:**  
-I advocate the use of DynamoDB, but I also need to consider my colleagues' concerns about cost and complexity. Therefore, I think we need to make a decision that balances performance and budget constraints.
+I advocated the use of DynamoDB, but I also need to consider my colleagues' concerns about cost and complexity. Therefore, I think we need to make a decision that balances performance and budget constraints.
 
 **Action:**
 
