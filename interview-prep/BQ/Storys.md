@@ -186,3 +186,35 @@ To solve this, I designed and built a dynamic, configurable monitoring tool. Her
 
 **Result:**  
 The dynamic monitoring tool greatly improved our efficiency. What used to take two days now only took a few minutes. By moving the control to a centralized configuration, we reduced the need for constant code changes and releases. This not only improved our operational speed but also empowered non-technical teams to adjust monitoring as needed.
+
+### Pagination
+
+**Situation:**  
+In my current role, I faced a challenge when dealing with pagination in a high-traffic system. We initially used the simple MySQL LIMIT OFFSET approach for pagination, which worked fine for basic scenarios where the dataset was relatively small. However, as our system scaled and users needed to query larger datasets, especially during peak traffic, we started experiencing significant performance degradation. The deep pagination queries were slow, putting a strain on the database and causing a negative impact on overall system performance.
+
+**Task:**  
+I needed to find a more efficient pagination solution that could handle high traffic and large datasets without compromising on performance. The solution had to be flexible enough to accommodate different business needs, such as scenarios where we had complex search requirements or the need for real-time data.
+
+**Action:**  
+I researched and experimented with different pagination techniques, tailoring them to specific use cases within our system. Here’s the approach I took:
+
+1. **Limit Offset Pagination:**  
+   This method remained our go-to for simple scenarios where users needed to jump to specific pages and view total record counts. However, I recognized its limitations for deep pagination, so I restricted its use to lightweight queries where deep pagination was unlikely.
+
+2. **Primary Key-Based Pagination:**  
+   For scenarios involving deep pagination, I introduced primary key-based pagination. Instead of relying on offset, I modified the queries to filter results based on the last seen primary key. This reduced the load on the database by narrowing the search range with each successive query. This method significantly improved performance and reduced the risk of slow queries during peak traffic.
+
+3. **HasMore Rolling Pagination:**  
+   In scenarios where users didn’t need to know the total number of records, such as infinite scrolling interfaces, I implemented a rolling pagination method. Instead of fetching total records, I retrieved one extra record per page to determine if more data existed (hasMore = true). This avoided the need for SELECT COUNT(\*) queries and optimized performance for user interfaces that didn't require total record counts.
+
+4. **ElasticSearch Pagination:**  
+   For complex search scenarios where performance was critical, I leveraged ElasticSearch. Although ElasticSearch also supports pagination similar to MySQL, I carefully tuned the pagination depth to avoid performance degradation. This approach proved useful for both B2B and B2C scenarios where users often performed complex searches over large datasets. I also ensured that ElasticSearch indexes were kept up-to-date with MySQL, understanding the trade-offs between real-time data and performance.
+
+**Result:**  
+By implementing these different pagination strategies, I was able to optimize our system for various use cases:
+
+- The primary key-based pagination improved performance in high-traffic scenarios, reducing the load on our database.
+- Rolling pagination enhanced the user experience in apps with infinite scrolling, while simultaneously decreasing the overall query cost.
+- ElasticSearch-based pagination enabled us to handle complex search queries efficiently, especially for business-critical scenarios with large datasets.
+
+Ultimately, this flexible approach allowed our system to scale effectively, improved performance, and provided a better user experience. It also prevented potential outages during peak traffic, aligning with Amazon’s “Customer Obsession” and “Bias for Action” principles by ensuring our customers had a seamless experience.
